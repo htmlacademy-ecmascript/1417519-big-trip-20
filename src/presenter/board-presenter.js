@@ -1,8 +1,8 @@
-import SortView from './view/sort-view.js';
-import TripEventList from './view/waypoint-list-view.js';
-import CreateFormView from './view/create-form-view.js';
-import TripEventItem from './view/waipoint-item-view.js';
-import {render} from './render.js';
+import SortView from '../view/sort-view.js';
+import TripEventList from '../view/waypoint-list-view.js';
+import CreateFormView from '../view/create-form-view.js';
+import TripEventItem from '../view/waipoint-item-view.js';
+import {render} from '../render.js';
 
 export default class BoarderPresenter {
   sortComponent = new SortView();
@@ -23,3 +23,4 @@ export default class BoarderPresenter {
     }
   }
 }
+
