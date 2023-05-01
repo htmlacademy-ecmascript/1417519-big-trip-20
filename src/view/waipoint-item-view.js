@@ -1,5 +1,4 @@
 import { createElement } from '../render.js';
-
 function createTripEventsItemTemplate() {
   return `<li class="trip-events__item">
   <div class="event">
