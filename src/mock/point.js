@@ -1,5 +1,5 @@
 import { getRandomArrayElement } from '../utils';
-import { Destinations, Descriptions, WaypointType } from '../consts';
+import { Destinations, Descriptions } from '../consts';
 
 
 const point = [ {
@@ -11,7 +11,7 @@ const point = [ {
   'offers': [
     '2'
   ],
-  'type': getRandomArrayElement(WaypointType)
+  'type': 'taxi',
 },
 {
   'basePrice': 1100,
@@ -22,7 +22,7 @@ const point = [ {
   'offers': [
     '1'
   ],
-  'type': getRandomArrayElement(WaypointType)
+  'type': 'taxi',
 },
 ];
 
@@ -32,6 +32,11 @@ const moreOffers = [
     offers: [
       {
         id: '1',
+        title: 'Choose seats',
+        price: 150
+      },
+      {
+        id: '2',
         title: 'Add luggage',
         price: 150
       }
@@ -41,9 +46,14 @@ const moreOffers = [
     type: 'taxi',
     offers: [
       {
-        id: '2',
+        id: '5',
         title: 'Switch to comfort class',
         price: 250
+      },
+      {
+        id: '6',
+        title: 'Add luggage',
+        price: 150
       }
     ]
   },
@@ -58,6 +68,10 @@ const destinations = [
       {
         srс: 'https://loremflickr.com/248/152?random=2',
         description: 'Event photo'
+      },
+      {
+        srс: 'https://loremflickr.com/248/152?random=3',
+        description: 'Event photo'
       }
     ]
   },
@@ -68,6 +82,10 @@ const destinations = [
     pictures: [
       {
         srс: 'https://loremflickr.com/248/152?random=1',
+        description: 'Event photo'
+      },
+      {
+        srс: 'https://loremflickr.com/248/152?random=5',
         description: 'Event photo'
       }
     ]

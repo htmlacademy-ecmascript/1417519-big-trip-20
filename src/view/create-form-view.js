@@ -1,6 +1,11 @@
 import { createElement } from '../render.js';
 
-function createFormTemplate() {
+function createFormTemplate(tripPoint,tripOffer,tripDestination) {
+  const {destination, type} = tripPoint;
+
+  const destinationObj = tripDestination.find((dstn)=>dstn.id === destination);
+  const offerObj = tripOffer.find((offer)=>offer.type === type);
+
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
     <header class="event__header">
@@ -102,45 +107,18 @@ function createFormTemplate() {
           <div class="event__offer-selector">
             <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked>
             <label class="event__offer-label" for="event-offer-luggage-1">
-              <span class="event__offer-title">Add luggage</span>
+              <span class="event__offer-title">${offerObj.offers[0].title}</span>
               &plus;&euro;&nbsp;
-              <span class="event__offer-price">30</span>
-            </label>
-          </div>
-
-          <div class="event__offer-selector">
-            <input class="event__offer-checkbox  visually-hidden" id="event-offer-comfort-1" type="checkbox" name="event-offer-comfort" checked>
-            <label class="event__offer-label" for="event-offer-comfort-1">
-              <span class="event__offer-title">Switch to comfort class</span>
-              &plus;&euro;&nbsp;
-              <span class="event__offer-price">100</span>
-            </label>
-          </div>
-
-          <div class="event__offer-selector">
-            <input class="event__offer-checkbox  visually-hidden" id="event-offer-meal-1" type="checkbox" name="event-offer-meal">
-            <label class="event__offer-label" for="event-offer-meal-1">
-              <span class="event__offer-title">Add meal</span>
-              &plus;&euro;&nbsp;
-              <span class="event__offer-price">15</span>
-            </label>
-          </div>
-
-          <div class="event__offer-selector">
-            <input class="event__offer-checkbox  visually-hidden" id="event-offer-seats-1" type="checkbox" name="event-offer-seats">
-            <label class="event__offer-label" for="event-offer-seats-1">
-              <span class="event__offer-title">Choose seats</span>
-              &plus;&euro;&nbsp;
-              <span class="event__offer-price">5</span>
+              <span class="event__offer-price">${offerObj.offers[0].price}</span>
             </label>
           </div>
 
           <div class="event__offer-selector">
             <input class="event__offer-checkbox  visually-hidden" id="event-offer-train-1" type="checkbox" name="event-offer-train">
             <label class="event__offer-label" for="event-offer-train-1">
-              <span class="event__offer-title">Travel by train</span>
+              <span class="event__offer-title">${offerObj.offers[1].title}</span>
               &plus;&euro;&nbsp;
-              <span class="event__offer-price">40</span>
+              <span class="event__offer-price">${offerObj.offers[1].price}</span>
             </label>
           </div>
         </div>
@@ -148,15 +126,13 @@ function createFormTemplate() {
 
       <section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        <p class="event__destination-description">Geneva is a city in Switzerland that lies at the southern tip of expansive Lac Léman (Lake Geneva). Surrounded by the Alps and Jura mountains, the city has views of dramatic Mont Blanc.</p>
+        <p class="event__destination-description">${destinationObj.description}</p>
 
         <div class="event__photos-container">
           <div class="event__photos-tape">
-            <img class="event__photo" src="img/photos/1.jpg" alt="Event photo">
-            <img class="event__photo" src="img/photos/2.jpg" alt="Event photo">
-            <img class="event__photo" src="img/photos/3.jpg" alt="Event photo">
-            <img class="event__photo" src="img/photos/4.jpg" alt="Event photo">
-            <img class="event__photo" src="img/photos/5.jpg" alt="Event photo">
+            <img class="event__photo" src=${destinationObj.pictures[0].srс} alt=${destinationObj.pictures[0].description}>
+            <img class="event__photo" src=${destinationObj.pictures[1].srс} alt=${destinationObj.pictures[1].description}>
+
           </div>
         </div>
       </section>
@@ -166,8 +142,14 @@ function createFormTemplate() {
 }
 
 export default class CreateFormView {
+  constructor({point,offer,destination}){
+    this.point = point;
+    this.offer = offer;
+    this.destination = destination;
+  }
+
   getTemplate() {
-    return createFormTemplate();
+    return createFormTemplate(this.point,this.offer,this.destination);
   }
 
   getElement() {
