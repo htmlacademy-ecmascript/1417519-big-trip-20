@@ -15,12 +15,15 @@ export default class BoarderPresenter {
 
   init(){
     this.boardPoints = [...this.pointsModel.getPoints()];
+    this.pointsOffers = [...this.pointsModel.getOffers()];
+    this.pointsDestinations = [...this.pointsModel.getDestinations()];
     render(this.sortComponent,this.container);
     render(this.eventListComponent,this.container);
     render(new CreateFormView(),this.eventListComponent.getElement());
 
     for(let i = 0; i < this.boardPoints.length; i++){
-      render(new TripEventItem({task: this.boardPoints[i]}),this.eventListComponent.getElement());
+      render(new TripEventItem({point: this.boardPoints[i],offers: this.pointsOffers[i],
+        destinations:this.pointsDestinations[i]}),this.eventListComponent.getElement());
     }
   }
 }
