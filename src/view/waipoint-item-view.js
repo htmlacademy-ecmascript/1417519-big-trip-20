@@ -1,9 +1,12 @@
 import { createElement } from '../render.js';
 import { humanizePointDateTime,humanizePointDateDayMonts } from '../utils.js';
 
-function createTripEventsItemTemplate(point,offer,tripDestination) {
-  const {basePrice, dateFrom, dateTo, destination, isFavorite, offers, type} = point;
+function createTripEventsItemTemplate(tripPoint,tripOffer,tripDestination) {
+  const {basePrice, dateFrom, dateTo, destination, isFavorite, offers, type} = tripPoint;
 
+  const destinationObj = tripDestination.find((dstn)=>dstn.id === destination);
+
+  const offerObj = tripOffer.find((offer)=>offer.type === type);
 
   const dateMontsDay = humanizePointDateDayMonts(dateFrom);
   const dateStart = humanizePointDateTime(dateFrom);
@@ -60,7 +63,7 @@ export default class TripEventItem {
   }
 
   getTemplate() {
-    return createTripEventsItemTemplate(this.point);
+    return createTripEventsItemTemplate(this.point, this.offer, this.destination);
   }
 
   getElement() {

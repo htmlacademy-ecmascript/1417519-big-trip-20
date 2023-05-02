@@ -22,8 +22,8 @@ export default class BoarderPresenter {
     render(new CreateFormView(),this.eventListComponent.getElement());
 
     for(let i = 0; i < this.boardPoints.length; i++){
-      render(new TripEventItem({point: this.boardPoints[i],offers: this.pointsOffers[i],
-        destinations:this.pointsDestinations[i]}),this.eventListComponent.getElement());
+      render(new TripEventItem({point: this.boardPoints[i],offer: this.pointsOffers[i],
+        destination:this.pointsDestinations[i]}),this.eventListComponent.getElement());
     }
   }
 }
