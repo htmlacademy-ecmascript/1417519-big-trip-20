@@ -17,6 +17,7 @@ export default class BoarderPresenter {
     this.boardPoints = [...this.pointsModel.getPoints()];
     this.pointsOffers = [...this.pointsModel.getOffers()];
     this.pointsDestinations = [...this.pointsModel.getDestinations()];
+
     render(this.sortComponent,this.container);
     render(this.eventListComponent,this.container);
     render(new CreateFormView({point: this.boardPoints[0], offer: this.pointsOffers,

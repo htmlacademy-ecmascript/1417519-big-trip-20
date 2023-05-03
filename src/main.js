@@ -11,7 +11,6 @@ const pointsModel = new PointsModel();
 
 const boarderPresenter = new BoarderPresenter({container:tripEvents,pointsModel});
 
-
 render(new TripInfo(),tripMain,'afterbegin');
 render(new FilterView(), controlsFilters);
 

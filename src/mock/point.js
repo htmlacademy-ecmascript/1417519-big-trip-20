@@ -14,10 +14,32 @@ const point = [ {
   'type': 'taxi',
 },
 {
-  'basePrice': 1100,
+  'basePrice': 1300,
   'dateFrom': '2019-07-10T22:55:56.845Z',
   'dateTo': '2019-07-11T11:22:13.375Z',
   'destination': '4',
+  'isFavorite': true,
+  'offers': [
+    '1'
+  ],
+  'type': 'taxi',
+},
+{
+  'basePrice': 1200,
+  'dateFrom': '2019-07-10T22:55:56.845Z',
+  'dateTo': '2019-07-11T11:22:13.375Z',
+  'destination': '4',
+  'isFavorite': true,
+  'offers': [
+    '1'
+  ],
+  'type': 'taxi',
+},
+{
+  'basePrice': 1800,
+  'dateFrom': '2019-07-10T22:55:56.845Z',
+  'dateTo': '2019-07-11T11:22:13.375Z',
+  'destination': '11',
   'isFavorite': true,
   'offers': [
     '1'
@@ -89,6 +111,36 @@ const destinations = [
         description: 'Event photo'
       }
     ]
+  },
+  {
+    id: '4',
+    description: getRandomArrayElement(Descriptions),
+    name: getRandomArrayElement(Destinations),
+    pictures: [
+      {
+        srс: 'https://loremflickr.com/248/152?random=1',
+        description: 'Event photo'
+      },
+      {
+        srс: 'https://loremflickr.com/248/152?random=5',
+        description: 'Event photo'
+      }
+    ]
+  },
+  {
+    id: '11',
+    description: getRandomArrayElement(Descriptions),
+    name: getRandomArrayElement(Destinations),
+    pictures: [
+      {
+        srс: 'https://loremflickr.com/248/152?random=1',
+        description: 'Event photo'
+      },
+      {
+        srс: 'https://loremflickr.com/248/152?random=5',
+        description: 'Event photo'
+      }
+    ]
   }
 ];
 
@@ -102,7 +154,7 @@ function getOffer() {
 }
 
 function getDestination() {
-  return getRandomArrayElement(destinations);
+  return destinations;
 }
 
 export {getPoint, getOffer, getDestination};
