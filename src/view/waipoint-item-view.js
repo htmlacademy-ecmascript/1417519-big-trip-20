@@ -1,8 +1,9 @@
+import dayjs from 'dayjs';
 import { createElement } from '../render.js';
 import { humanizePointDateTime,humanizePointDateDayMonts } from '../utils.js';
 
 function createTripEventsItemTemplate(tripPoint,tripOffer,tripDestination) {
-  const {basePrice, dateFrom, dateTo, destination, isFavorite, offers, type} = tripPoint;
+  const {basePrice, dateFrom, dateTo, destination, isFavorite, type} = tripPoint;
 
   const destinationObj = tripDestination.find((dstn)=>dstn.id === destination);
   const offerObj = tripOffer.find((offer)=>offer.type === type);
@@ -10,10 +11,26 @@ function createTripEventsItemTemplate(tripPoint,tripOffer,tripDestination) {
   const dateMontsDay = humanizePointDateDayMonts(dateFrom);
   const dateStart = humanizePointDateTime(dateFrom);
   const dateEnd = humanizePointDateTime(dateTo);
+  const time = dayjs(dayjs(dateFrom).diff(dateTo)).format('mm');
+
 
   function isFavoriteTrue (bolean){
     return bolean ? 'event__favorite-btn--active' : '';
   }
+
+  const getOffersList = () => {
+    const offersList = [];
+    for (let i = 0; i < offerObj.offers.length; i++){
+      const offer = `
+        <li class="event__offer">
+        <span class="event__offer-title">${offerObj.offers[0].title}</span>
+        &plus;&euro;&nbsp;
+        <span class="event__offer-price">${offerObj.offers[0].price}</span>
+      </li>`;
+      offersList.push(offer);
+    }
+    return offersList.join('');
+  };
 
   return `<li class="trip-events__item">
   <div class="event">
@@ -28,18 +45,14 @@ function createTripEventsItemTemplate(tripPoint,tripOffer,tripDestination) {
         &mdash;
         <time class="event__end-time" datetime="2019-03-18T11:00">${dateEnd}</time>
       </p>
-      <p class="event__duration">30M</p>
+      <p class="event__duration">${time}M</p>
     </div>
     <p class="event__price">
       &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
     </p>
     <h4 class="visually-hidden">Offers:</h4>
     <ul class="event__selected-offers">
-      <li class="event__offer">
-        <span class="event__offer-title">${offerObj.offers[0].title}</span>
-        &plus;&euro;&nbsp;
-        <span class="event__offer-price">${offerObj.offers[0].price}</span>
-      </li>
+       ${getOffersList()}
     </ul>
     <button class="event__favorite-btn ${isFavoriteTrue(isFavorite)}" type="button">
       <span class="visually-hidden">Add to favorite</span>
