@@ -18,7 +18,7 @@ const point = [ {
   'dateFrom': '2019-07-10T22:55:56.845Z',
   'dateTo': '2019-07-11T11:22:13.375Z',
   'destination': '4',
-  'isFavorite': false,
+  'isFavorite': true,
   'offers': [
     '1'
   ],

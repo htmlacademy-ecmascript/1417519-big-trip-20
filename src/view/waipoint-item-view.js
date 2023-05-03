@@ -23,9 +23,9 @@ function createTripEventsItemTemplate(tripPoint,tripOffer,tripDestination) {
     for (let i = 0; i < offerObj.offers.length; i++){
       const offer = `
         <li class="event__offer">
-        <span class="event__offer-title">${offerObj.offers[0].title}</span>
+        <span class="event__offer-title">${offerObj.offers[i].title}</span>
         &plus;&euro;&nbsp;
-        <span class="event__offer-price">${offerObj.offers[0].price}</span>
+        <span class="event__offer-price">${offerObj.offers[i].price}</span>
       </li>`;
       offersList.push(offer);
     }
