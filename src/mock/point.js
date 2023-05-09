@@ -20,7 +20,7 @@ const point = [ {
   'destination': '4',
   'isFavorite': true,
   'offers': [
-    '1'
+    '1','2'
   ],
   'type': 'taxi',
 },
@@ -71,6 +71,11 @@ const moreOffers = [
         id: '5',
         title: 'Switch to comfort class',
         price: 250
+      },
+      {
+        id: '6',
+        title: 'Add luggage',
+        price: 150
       },
       {
         id: '6',

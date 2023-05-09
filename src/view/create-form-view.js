@@ -1,4 +1,4 @@
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import { humanizePointDateDayMontsTime } from '../utils.js';
 
 function createFormTemplate(tripPoint,tripOffer,tripDestination) {
@@ -146,26 +146,15 @@ function createFormTemplate(tripPoint,tripOffer,tripDestination) {
 </li>`;
 }
 
-export default class CreateFormView {
+export default class CreateFormView extends AbstractView{
   constructor({point,offer,destination}){
+    super();
     this.point = point;
     this.offer = offer;
     this.destination = destination;
   }
 
-  getTemplate() {
+  get template() {
     return createFormTemplate(this.point,this.offer,this.destination);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
   }
 }
