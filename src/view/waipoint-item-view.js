@@ -1,7 +1,6 @@
-import dayjs from 'dayjs';
 import { createElement } from '../render.js';
 import { humanizePointDateTime,humanizePointDateDayMonts } from '../utils.js';
-
+import { getPointDuration } from '../utils.js';
 function createTripEventsItemTemplate(tripPoint,tripOffer,tripDestination) {
   const {basePrice, dateFrom, dateTo, destination, isFavorite, type} = tripPoint;
 
@@ -11,7 +10,6 @@ function createTripEventsItemTemplate(tripPoint,tripOffer,tripDestination) {
   const dateMontsDay = humanizePointDateDayMonts(dateFrom);
   const dateStart = humanizePointDateTime(dateFrom);
   const dateEnd = humanizePointDateTime(dateTo);
-  const time = dayjs(dayjs(dateFrom).diff(dateTo)).format('mm');
 
 
   function isFavoriteTrue (bolean){
@@ -45,7 +43,7 @@ function createTripEventsItemTemplate(tripPoint,tripOffer,tripDestination) {
         &mdash;
         <time class="event__end-time" datetime="2019-03-18T11:00">${dateEnd}</time>
       </p>
-      <p class="event__duration">${time}M</p>
+      <p class="event__duration">${getPointDuration(dateFrom,dateTo)}M</p>
     </div>
     <p class="event__price">
       &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
