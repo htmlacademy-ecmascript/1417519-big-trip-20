@@ -1,22 +1,22 @@
 import { getPoint,getOffer,getDestination } from '../mock/point';
 
-const POINT_COUNT = 3;
+const POINT_COUNT = 8;
 
 export default class PointsModel {
-  point = Array.from({length: POINT_COUNT},getPoint);
-  offer = Array.from({length: POINT_COUNT},getOffer);
-  destination = getDestination();
+  #point = Array.from({length: POINT_COUNT},getPoint);
+  #offer = Array.from({length: POINT_COUNT},getOffer);
+  #destination = getDestination();
 
-  getPoints(){
-    return this.point;
+  get points(){
+    return this.#point;
   }
 
-  getOffers(){
-    return this.offer;
+  get offers(){
+    return this.#offer;
   }
 
-  getDestinations(){
-    return this.destination;
+  get destinations(){
+    return this.#destination;
   }
 }
 

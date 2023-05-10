@@ -1,6 +1,6 @@
-import dayjs from 'dayjs';
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import { humanizePointDateTime,humanizePointDateDayMonts } from '../utils.js';
+import { getPointDuration } from '../utils.js';
 
 function createTripEventsItemTemplate(tripPoint,tripOffer,tripDestination) {
   const {basePrice, dateFrom, dateTo, destination, isFavorite, type} = tripPoint;
@@ -11,7 +11,6 @@ function createTripEventsItemTemplate(tripPoint,tripOffer,tripDestination) {
   const dateMontsDay = humanizePointDateDayMonts(dateFrom);
   const dateStart = humanizePointDateTime(dateFrom);
   const dateEnd = humanizePointDateTime(dateTo);
-  const time = dayjs(dayjs(dateFrom).diff(dateTo)).format('mm');
 
 
   function isFavoriteTrue (bolean){
@@ -45,7 +44,7 @@ function createTripEventsItemTemplate(tripPoint,tripOffer,tripDestination) {
         &mdash;
         <time class="event__end-time" datetime="2019-03-18T11:00">${dateEnd}</time>
       </p>
-      <p class="event__duration">${time}M</p>
+      <p class="event__duration">${getPointDuration(dateFrom,dateTo)}M</p>
     </div>
     <p class="event__price">
       &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
@@ -67,26 +66,29 @@ function createTripEventsItemTemplate(tripPoint,tripOffer,tripDestination) {
 </li>`;
 }
 
-export default class TripEventItem {
-  constructor({point,offer,destination}){
-    this.point = point;
-    this.offer = offer;
-    this.destination = destination;
+export default class TripEventItem extends AbstractView{
+  #point = null;
+  #offer = null;
+  #destination = null;
+  #handleEditClick = null;
+
+  constructor({point,offer,destination, onEditClick}){
+    super();
+    this.#point = point;
+    this.#offer = offer;
+    this.#destination = destination;
+    this.#handleEditClick = onEditClick;
+
+    this.element.querySelector('.event__rollup-btn')
+      .addEventListener('click',this.#editClickHandler);
   }
 
-  getTemplate() {
-    return createTripEventsItemTemplate(this.point, this.offer, this.destination);
+  get template() {
+    return createTripEventsItemTemplate(this.#point, this.#offer, this.#destination);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
-  }
+  #editClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleEditClick();
+  };
 }
