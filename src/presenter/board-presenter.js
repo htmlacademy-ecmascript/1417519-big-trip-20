@@ -3,6 +3,11 @@ import TripEventList from '../view/waypoint-list-view.js';
 import TripEventItem from '../view/waipoint-item-view.js';
 import EditForm from '../view/edit-form-view.js';
 import { render, replace } from '../framework/render.js';
+import TripInfo from '../view/trip-info-view.js';
+import NoPointView from '../view/list-empty-view.js';
+
+const tripMain = document.querySelector('.trip-main');
+
 
 export default class BoarderPresenter {
   #container = null;
@@ -10,6 +15,7 @@ export default class BoarderPresenter {
 
   #sortComponent = new SortView();
   #eventListComponent = new TripEventList();
+  #noPointComponent = new NoPointView();
 
 
   #boardPoints = [];
@@ -26,13 +32,7 @@ export default class BoarderPresenter {
     this.#pointsOffers = [...this.#pointsModel.offers];
     this.#pointsDestinations = [...this.#pointsModel.destinations];
 
-    render(this.#sortComponent,this.#container);
-    render(this.#eventListComponent,this.#container);
-
-    for(let i = 0; i < this.#boardPoints.length; i++){
-      this.#renderPoint({point: this.#boardPoints[i],offer: this.#pointsOffers,
-        destination:this.#pointsDestinations});
-    }
+    this.#renderList();
   }
 
   #renderPoint({point,offer,destination}){
@@ -73,6 +73,21 @@ export default class BoarderPresenter {
     }
 
     render(pointComponent,this.#eventListComponent.element);
+  }
+
+  #renderList(){
+    if(this.#boardPoints.length === 0){
+      render (this.#noPointComponent,this.#container);
+    }else {
+      render(new TripInfo(),tripMain,'afterbegin');
+      render(this.#sortComponent,this.#container);
+    }
+    render(this.#eventListComponent,this.#container);
+
+    for(let i = 0; i < this.#boardPoints.length; i++){
+      this.#renderPoint({point: this.#boardPoints[i],offer: this.#pointsOffers,
+        destination:this.#pointsDestinations});
+    }
   }
 }
 
