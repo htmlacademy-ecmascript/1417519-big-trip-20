@@ -15,4 +15,11 @@ const Descriptions = [
   'Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.',
 ];
 
-export {WaypointType,Destinations,Descriptions};
+const FilterType = {
+  EVERYTHING:'everything',
+  FUTURE:'future',
+  PRESENT:'present',
+  PAST:'past',
+};
+
+export {WaypointType,Destinations,Descriptions,FilterType};

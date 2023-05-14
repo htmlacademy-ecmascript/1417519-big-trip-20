@@ -1,6 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { humanizePointDateTime,humanizePointDateDayMonts } from '../utils.js';
-import { getPointDuration } from '../utils.js';
+import { humanizePointDateTime,humanizePointDateDayMonts } from '../utils/point.js';
+import { getPointDuration } from '../utils/point.js';
 
 function createTripEventsItemTemplate(tripPoint,tripOffer,tripDestination) {
   const {basePrice, dateFrom, dateTo, destination, isFavorite, type} = tripPoint;

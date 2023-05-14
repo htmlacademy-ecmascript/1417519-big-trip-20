@@ -17,9 +17,6 @@ const DATE_FORMAT_TIME = 'HH:mm';
 const DATE_FORMAT_MONTS = 'MMM D';
 const DATE_FORMAT_MONTS_TIME = 'DD/MM/YY hh:mm';
 
-function getRandomArrayElement(items) {
-  return items[Math.floor(Math.random() * items.length)];
-}
 
 function humanizePointDateTime(date) {
   return date ? dayjs(date).format(DATE_FORMAT_TIME) : '';
@@ -52,4 +49,32 @@ function getPointDuration(dateFrom,dateTo){
   return pointDuration;
 }
 
-export {getRandomArrayElement,humanizePointDateTime,humanizePointDateDayMonts,humanizePointDateDayMontsTime,getPointDuration};
+function getScheduleDate(date) {
+  return dayjs(date).format('DD/MM/YY HH:mm');
+}
+
+function isPointFuture(point) {
+  return dayjs().isBefore(point.dateFrom);
+}
+function isPointPresent(point) {
+  return (dayjs().isAfter(point.dateFrom) && dayjs().isBefore(point.dateTo));
+}
+function isPointPast(point) {
+  return dayjs().isAfter(point.dateTo);
+}
+
+function capitalize(string) {
+  return `${string[0].toUpperCase()}${string.slice(1)}`;
+}
+
+export {
+  humanizePointDateTime,
+  humanizePointDateDayMonts,
+  humanizePointDateDayMontsTime,
+  getPointDuration,
+  getScheduleDate,
+  isPointFuture,
+  isPointPresent,
+  isPointPast,
+  capitalize
+};
