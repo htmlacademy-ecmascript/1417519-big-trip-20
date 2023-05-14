@@ -49,4 +49,32 @@ function getPointDuration(dateFrom,dateTo){
   return pointDuration;
 }
 
-export {humanizePointDateTime,humanizePointDateDayMonts,humanizePointDateDayMontsTime,getPointDuration};
+function getScheduleDate(date) {
+  return dayjs(date).format('DD/MM/YY HH:mm');
+}
+
+function isPointFuture(point) {
+  return dayjs().isBefore(point.dateFrom);
+}
+function isPointPresent(point) {
+  return (dayjs().isAfter(point.dateFrom) && dayjs().isBefore(point.dateTo));
+}
+function isPointPast(point) {
+  return dayjs().isAfter(point.dateTo);
+}
+
+function capitalize(string) {
+  return `${string[0].toUpperCase()}${string.slice(1)}`;
+}
+
+export {
+  humanizePointDateTime,
+  humanizePointDateDayMonts,
+  humanizePointDateDayMontsTime,
+  getPointDuration,
+  getScheduleDate,
+  isPointFuture,
+  isPointPresent,
+  isPointPast,
+  capitalize
+};

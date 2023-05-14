@@ -1,6 +1,6 @@
-import { getPoint,getOffer,getDestination } from '../mock/point';
+import { getPoint,getOffer,getDestination } from '../mock/point.js';
 
-const POINT_COUNT = 10;
+const POINT_COUNT = 13;
 
 export default class PointsModel {
   #point = Array.from({length: POINT_COUNT},getPoint);

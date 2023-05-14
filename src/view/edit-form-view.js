@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { humanizePointDateDayMontsTime } from '../utils/task.js';
+import { humanizePointDateDayMontsTime } from '../utils/point.js';
 
 function createEditFormTemplate(tripPoint,tripOffer,tripDestination) {
   const {basePrice,destination, type, dateFrom, dateTo} = tripPoint;

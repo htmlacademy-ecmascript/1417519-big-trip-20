@@ -1,5 +1,5 @@
-import { getRandomArrayElement } from '../utils/utils';
-import { Destinations, Descriptions } from '../consts';
+import { getRandomArrayElement } from '../utils/common.js';
+import { Destinations, Descriptions } from '../consts.js';
 
 
 const point = [ {
@@ -26,8 +26,8 @@ const point = [ {
 },
 {
   'basePrice': 1200,
-  'dateFrom': '2019-07-10T22:55:56.845Z',
-  'dateTo': '2019-07-11T11:22:13.375Z',
+  'dateFrom': '2023-07-22T22:55:56.845Z',
+  'dateTo': '2024-07-25T11:22:13.375Z',
   'destination': '4',
   'isFavorite': true,
   'offers': [
