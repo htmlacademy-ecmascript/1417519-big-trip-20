@@ -53,7 +53,7 @@ export default class BoarderPresenter {
 
   #renderPoint({point,offer,destination}){
     const pointPresentor = new PointPresentor({
-      taskListContainer: this.#eventListComponent.element,
+      pointListContainer: this.#eventListComponent.element,
       onDataChange: this.#handlePointChange
     });
     pointPresentor.init({point,offer,destination});

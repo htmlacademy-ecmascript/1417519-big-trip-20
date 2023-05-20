@@ -87,8 +87,8 @@ export default class PointPresentor {
     }
   };
 
-  #handleFormSubmit = () => {
+  #handleFormSubmit = (point) => {
+    this.#handleDataChange(point);
     this.#replaceFormToCard();
   };
-
 }
