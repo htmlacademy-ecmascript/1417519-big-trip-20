@@ -1,5 +1,6 @@
 import { getRandomArrayElement } from '../utils/common.js';
 import { Destinations, Descriptions } from '../consts.js';
+import { nanoid } from 'nanoid';
 
 
 const point = [ {
@@ -151,7 +152,9 @@ const destinations = [
 
 
 function getPoint(){
-  return getRandomArrayElement(point);
+  return {
+    id: nanoid(),
+    ...getRandomArrayElement(point)};
 }
 
 function getOffer() {
