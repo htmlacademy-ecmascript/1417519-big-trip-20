@@ -38,14 +38,15 @@ export default class BoarderPresenter {
     this.#renderList();
   }
 
+  #handleModeChange = () => {
+    this.#pointPresenters.forEach((presenter) => presenter.resetView());
+  };
+
   #handlePointChange = (updatedTask) => {
     this.#boardPoints = updateItem(this.#boardPoints, updatedTask);
     this.#pointPresenters.get(updatedTask.point.id).init(updatedTask);
   };
 
-  #handleModeChange = () => {
-    this.#pointPresenters.forEach((presenter) => presenter.resetView());
-  };
 
   #renderSort() {
     render(this.#sortComponent, this.#eventListComponent.element, RenderPosition.AFTERBEGIN);
