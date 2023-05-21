@@ -40,7 +40,11 @@ export default class BoarderPresenter {
 
   #handlePointChange = (updatedTask) => {
     this.#boardPoints = updateItem(this.#boardPoints, updatedTask);
-    this.#pointPresenters.get(updatedTask.id).init(updatedTask);
+    this.#pointPresenters.get(updatedTask.point.id).init(updatedTask);
+  };
+
+  #handleModeChange = () => {
+    this.#pointPresenters.forEach((presenter) => presenter.resetView());
   };
 
   #renderSort() {
@@ -52,12 +56,15 @@ export default class BoarderPresenter {
   }
 
   #renderPoint({point,offer,destination}){
-    const pointPresentor = new PointPresentor({
+    const pointPresenter = new PointPresentor({
       pointListContainer: this.#eventListComponent.element,
-      onDataChange: this.#handlePointChange
+      onDataChange: this.#handlePointChange,
+      onModeChange: this.#handleModeChange,
     });
-    pointPresentor.init({point,offer,destination});
-    this.#pointPresenters.set(point.id, pointPresentor);
+
+    pointPresenter.init({point,offer,destination});
+
+    this.#pointPresenters.set(point.id, pointPresenter);
   }
 
   #renderList(){

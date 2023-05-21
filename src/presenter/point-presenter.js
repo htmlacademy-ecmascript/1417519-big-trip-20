@@ -4,7 +4,6 @@ import EditForm from '../view/edit-form-view.js';
 
 export default class PointPresentor {
   #pointListContainer = null;
-
   #handleDataChange = null;
 
   #pointComponent = null;
@@ -77,7 +76,8 @@ export default class PointPresentor {
   };
 
   #handleFavoriteClick = () => {
-    this.#handleDataChange({...this.#point, isFavorite: !this.#point.isFavorite});
+    this.#handleDataChange({point: {...this.#point, isFavorite: !this.#point.isFavorite},
+      offer: this.#offer, destination: this.#destination});
   };
 
   #escKeyDownHandler = (evt) => {
@@ -88,7 +88,8 @@ export default class PointPresentor {
   };
 
   #handleFormSubmit = (point) => {
-    this.#handleDataChange(point);
+    this.#handleDataChange({point, offer: this.#offer, destination: this.#destination});
     this.#replaceFormToCard();
   };
 }
+
