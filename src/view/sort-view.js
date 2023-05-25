@@ -48,7 +48,7 @@ export default class SortView extends AbstractView{
     if(evt.target.tagName !== 'INPUT'){
       return;
     }
-    evt.preventDefault();
+
     this.#handleSortTypeChange(evt.target.id);
   };
 }
