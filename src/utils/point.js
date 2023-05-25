@@ -67,6 +67,35 @@ function capitalize(string) {
   return `${string[0].toUpperCase()}${string.slice(1)}`;
 }
 
+
+function sortPointDay(taskA, taskB) {
+  const timeDiffA = dayjs(taskA.dateTo).diff(dayjs(taskA.dateFrom));
+  const timeDiffB = dayjs(taskB.dateTo).diff(dayjs(taskB.dateFrom));
+  if(timeDiffA > timeDiffB){
+    return -1;
+  }
+}
+
+function sortPointEvent() {
+}
+
+function sortPointTime(taskA, taskB) {
+  const timeDiffA = dayjs(taskA.dateTo).diff(dayjs(taskA.dateFrom));
+  const timeDiffB = dayjs(taskB.dateTo).diff(dayjs(taskB.dateFrom));
+  if(timeDiffA > timeDiffB){
+    return -1;
+  }
+}
+
+function sortPointPrice(taskA, taskB) {
+  if(taskA.basePrice > taskB.basePrice){
+    return -1;
+  }
+}
+
+function sortPointOFFER() {
+}
+
 export {
   humanizePointDateTime,
   humanizePointDateDayMonts,
@@ -76,5 +105,10 @@ export {
   isPointFuture,
   isPointPresent,
   isPointPast,
-  capitalize
+  capitalize,
+  sortPointDay,
+  sortPointEvent,
+  sortPointTime,
+  sortPointPrice,
+  sortPointOFFER
 };
