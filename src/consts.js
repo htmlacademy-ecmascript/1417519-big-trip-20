@@ -1,7 +1,3 @@
-const WaypointType = [
-  'Taxi', 'Bus', 'Train', 'Ship', 'Drive', 'Flight', 'Check-in', 'Sightseeing', 'Restaurant'
-];
-
 const Destinations = [
   'Amsterdam', 'Berlin', 'Brooklyn ', 'New York', 'Moscow', 'Saint Petersburg', 'London', 'Istanbul', 'Madrid'
 ];
@@ -30,4 +26,4 @@ const SortType = {
   SORT_OFFER: 'sort-offer',
 };
 
-export {WaypointType,Destinations,Descriptions,FilterType,SortType};
+export {Destinations,Descriptions,FilterType,SortType};

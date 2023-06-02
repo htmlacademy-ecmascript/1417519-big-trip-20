@@ -73,6 +73,7 @@ export default class PointPresentor {
 
   resetView() {
     if (this.#mode !== Mode.DEFAULT) {
+      this.#pointEditComponent.reset(this.#point);
       this.#replaceFormToCard();
     }
   }
@@ -102,6 +103,7 @@ export default class PointPresentor {
   #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape') {
       evt.preventDefault();
+      this.#pointEditComponent.reset(this.#point);
       this.#replaceFormToCard();
     }
   };
