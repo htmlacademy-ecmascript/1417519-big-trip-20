@@ -1,9 +1,8 @@
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { humanizePointDateDayMontsTime } from '../utils/point.js';
 
 function createEditFormTemplate(tripPoint,tripOffer,tripDestination) {
   const {basePrice,destination, type, dateFrom, dateTo} = tripPoint;
-
   const dateStart = humanizePointDateDayMontsTime(dateFrom);
   const dateEnd = humanizePointDateDayMontsTime(dateTo);
 
@@ -27,13 +26,23 @@ function createEditFormTemplate(tripPoint,tripOffer,tripDestination) {
     return offersList.join('');
   };
 
+  const getPicturesList = () => {
+    const picturesList = [];
+    for (let i = 0; i < destinationObj.pictures.length; i++){
+      const picture = `
+      <img class="event__photo" src="${destinationObj.pictures[i].src}" alt="Event photo">`;
+      picturesList.push(picture);
+    }
+    return picturesList.join('');
+  };
+
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
     <header class="event__header">
       <div class="event__type-wrapper">
         <label class="event__type  event__type-btn" for="event-type-toggle-1">
           <span class="visually-hidden">Choose event type</span>
-          <img class="event__type-icon" width="17" height="17" src="img/icons/flight.png" alt="Event type icon">
+          <img class="event__type-icon" width="17" height="17" src="img/icons/${tripPoint.type}.png" alt="Event type icon">
         </label>
         <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
@@ -96,8 +105,10 @@ function createEditFormTemplate(tripPoint,tripOffer,tripDestination) {
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destinationObj.name}" list="destination-list-1">
         <datalist id="destination-list-1">
           <option value="Amsterdam"></option>
-          <option value="Geneva"></option>
-          <option value="Chamonix"></option>
+          <option value="Berlin"></option>
+          <option value="Brooklyn"></option>
+          <option value="New York"></option>
+          <option value="Moscow"></option>
         </datalist>
       </div>
 
@@ -135,39 +146,121 @@ function createEditFormTemplate(tripPoint,tripOffer,tripDestination) {
       <section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
         <p class="event__destination-description">${destinationObj.description}</p>
+        <div class="event__photos-container">
+          <div class="event__photos-tape">
+            ${getPicturesList()}
+          </div>
+        </div>
       </section>
     </section>
   </form>
 </li>`;
 }
 
-export default class EditForm extends AbstractView{
-  #point = null;
+export default class EditForm extends AbstractStatefulView{
   #offer = null;
   #destination = null;
+
   #handleFormSubmit = null;
 
   constructor({point,offer,destination,onFormSubmit}){
     super();
-    this.#point = point;
     this.#offer = offer;
     this.#destination = destination;
 
+    this._setState(EditForm.parsePointToState(point));
+
+
     this.#handleFormSubmit = onFormSubmit;
 
-    this.element.querySelector('form')
-      .addEventListener('submit',this.#formSubmitHandler);
+    this._restoreHandlers();
 
-    this.element.querySelector('.event__rollup-btn')
-      .addEventListener('click',this.#formSubmitHandler);
   }
 
   get template() {
-    return createEditFormTemplate(this.#point,this.#offer,this.#destination);
+    return createEditFormTemplate(this._state,this.#offer,this.#destination);
   }
+
+  reset(point) {
+    this.updateElement(
+      EditForm.parsePointToState(point),
+    );
+  }
+
+  _restoreHandlers = () => {
+    this.element
+      .querySelector('.event__rollup-btn')
+      .addEventListener('click',this.#formSubmitHandler);
+
+    this.element
+      .querySelector('form')
+      .addEventListener('submit',this.#formSubmitHandler);
+
+    this.element
+      .querySelectorAll('.event__type-input')
+      .forEach((element) => {
+        element.addEventListener('change', this.#typeInputClick);
+      });
+
+    this.element
+      .querySelector('.event__input--price')
+      .addEventListener('change', this.#priceInputChange);
+
+    this.element
+      .querySelector('.event__input--destination')
+      .addEventListener('change', this.#destinationInputChange);
+  };
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(this.#point);
+    this.#handleFormSubmit(EditForm.parseStateToPoint(this._state));
   };
+
+  #typeInputClick = (evt) => {
+    evt.preventDefault();
+
+    this.updateElement({
+      ...this._state.point,
+      type: evt.target.value,
+      offers: []
+    });
+  };
+
+  #destinationInputChange = (evt) => {
+    evt.preventDefault();
+
+    const selectedDestination = this.#destination
+      .find((point)=> point.name === evt.target.value);
+
+    const selectedDestinationId = (selectedDestination)
+      ? selectedDestination.id
+      : null;
+
+    this.updateElement({
+
+      ...this._state.point,
+      destination: selectedDestinationId
+
+    });
+  };
+
+  #priceInputChange = (evt) => {
+    evt.preventDefault();
+
+    this._setState({
+
+      ...this._state.point,
+      basePrice: evt.target.value
+
+    });
+  };
+
+  static parsePointToState(point){
+    return {...point};
+  }
+
+  static parseStateToPoint(state){
+    const point = {...state};
+    return point;
+  }
 }

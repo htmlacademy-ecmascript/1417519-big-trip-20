@@ -73,6 +73,7 @@ export default class PointPresentor {
 
   resetView() {
     if (this.#mode !== Mode.DEFAULT) {
+      this.#pointEditComponent.reset(this.#point);
       this.#replaceFormToCard();
     }
   }
@@ -91,6 +92,7 @@ export default class PointPresentor {
   }
 
   #handleEditClick = () => {
+    document.querySelector('.trip-main__event-add-btn').disabled = true;
     this.#replaceCardToForm();
   };
 
@@ -102,12 +104,15 @@ export default class PointPresentor {
   #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape') {
       evt.preventDefault();
+      document.querySelector('.trip-main__event-add-btn').disabled = false;
+      this.#pointEditComponent.reset(this.#point);
       this.#replaceFormToCard();
     }
   };
 
   #handleFormSubmit = (point) => {
     this.#handleDataChange({point, offer: this.#offer, destination: this.#destination});
+    document.querySelector('.trip-main__event-add-btn').disabled = false;
     this.#replaceFormToCard();
   };
 }
