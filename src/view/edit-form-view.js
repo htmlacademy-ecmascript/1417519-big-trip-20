@@ -8,7 +8,7 @@ function createEditFormTemplate(tripPoint,tripOffer,tripDestination) {
 
   const destinationObj = tripDestination.find((dstn)=>dstn.id === destination);
   const offerObj = tripOffer.find((offer)=>offer.type === type);
-  console.log(destinationObj.pictures[1].src);
+
   const getOffersList = () => {
     const offersList = [];
     for (let i = 0; i < offerObj.offers.length; i++){
@@ -24,6 +24,16 @@ function createEditFormTemplate(tripPoint,tripOffer,tripDestination) {
       offersList.push(offer);
     }
     return offersList.join('');
+  };
+
+  const getPicturesList = () => {
+    const picturesList = [];
+    for (let i = 0; i < destinationObj.pictures.length; i++){
+      const picture = `
+      <img class="event__photo" src="${destinationObj.pictures[i].src}" alt="Event photo">`;
+      picturesList.push(picture);
+    }
+    return picturesList.join('');
   };
 
   return `<li class="trip-events__item">
@@ -95,8 +105,10 @@ function createEditFormTemplate(tripPoint,tripOffer,tripDestination) {
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destinationObj.name}" list="destination-list-1">
         <datalist id="destination-list-1">
           <option value="Amsterdam"></option>
-          <option value="Geneva"></option>
-          <option value="Chamonix"></option>
+          <option value="Berlin"></option>
+          <option value="Brooklyn"></option>
+          <option value="New York"></option>
+          <option value="Moscow"></option>
         </datalist>
       </div>
 
@@ -136,10 +148,7 @@ function createEditFormTemplate(tripPoint,tripOffer,tripDestination) {
         <p class="event__destination-description">${destinationObj.description}</p>
         <div class="event__photos-container">
           <div class="event__photos-tape">
-            <img class="event__photo" src="img/photos/2.jpg" alt="Event photo">
-            <img class="event__photo" src="img/photos/3.jpg" alt="Event photo">
-            <img class="event__photo" src="img/photos/4.jpg" alt="Event photo">
-            <img class="event__photo" src="img/photos/5.jpg" alt="Event photo">
+            ${getPicturesList()}
           </div>
         </div>
       </section>
@@ -196,6 +205,10 @@ export default class EditForm extends AbstractStatefulView{
     this.element
       .querySelector('.event__input--price')
       .addEventListener('change', this.#priceInputChange);
+
+    this.element
+      .querySelector('.event__input--destination')
+      .addEventListener('change', this.#destinationInputChange);
   };
 
   #formSubmitHandler = (evt) => {
@@ -210,6 +223,24 @@ export default class EditForm extends AbstractStatefulView{
       ...this._state.point,
       type: evt.target.value,
       offers: []
+    });
+  };
+
+  #destinationInputChange = (evt) => {
+    evt.preventDefault();
+
+    const selectedDestination = this.#destination
+      .find((point)=> point.name === evt.target.value);
+
+    const selectedDestinationId = (selectedDestination)
+      ? selectedDestination.id
+      : null;
+
+    this.updateElement({
+
+      ...this._state.point,
+      destination: selectedDestinationId
+
     });
   };
 

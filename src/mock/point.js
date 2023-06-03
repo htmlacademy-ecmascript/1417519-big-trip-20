@@ -1,5 +1,5 @@
 import { getRandomArrayElement } from '../utils/common.js';
-import { Destinations, Descriptions } from '../consts.js';
+import { Descriptions } from '../consts.js';
 import { nanoid } from 'nanoid';
 
 
@@ -7,7 +7,7 @@ const point = [ {
   'basePrice': 1100,
   'dateFrom': '2019-07-10T22:55:56.845Z',
   'dateTo': '2019-07-11T11:22:13.375Z',
-  'destination': '3',
+  'destination': '2',
   'isFavorite': false,
   'offers': [
     '2'
@@ -18,7 +18,7 @@ const point = [ {
   'basePrice': 1300,
   'dateFrom': '2019-07-10T22:55:56.845Z',
   'dateTo': '2019-07-11T11:22:13.375Z',
-  'destination': '4',
+  'destination': '3',
   'isFavorite': true,
   'offers': [
     '1','2'
@@ -40,7 +40,7 @@ const point = [ {
   'basePrice': 1800,
   'dateFrom': '2019-07-10T22:55:56.845Z',
   'dateTo': '2019-07-11T11:22:13.375Z',
-  'destination': '11',
+  'destination': '5',
   'isFavorite': true,
   'offers': [
     '1'
@@ -224,16 +224,31 @@ const moreOffers = [
 
 const destinations = [
   {
+    id: '2',
+    description:getRandomArrayElement(Descriptions),
+    name: 'Amsterdam',
+    pictures: [
+      {
+        src: 'https://loremflickr.com/248/152?random=1',
+        description: 'Event photo'
+      },
+      {
+        src: 'https://loremflickr.com/248/152?random=2',
+        description: 'Event photo'
+      }
+    ]
+  },
+  {
     id: '3',
     description:getRandomArrayElement(Descriptions),
-    name: getRandomArrayElement(Destinations),
+    name: 'Berlin',
     pictures: [
       {
-        srс: 'https://loremflickr.com/248/152?random=2',
+        src: 'https://loremflickr.com/248/152?random=3',
         description: 'Event photo'
       },
       {
-        srс: 'https://loremflickr.com/248/152?random=3',
+        src: 'https://loremflickr.com/248/152?random=4',
         description: 'Event photo'
       }
     ]
@@ -241,44 +256,44 @@ const destinations = [
   {
     id: '4',
     description: getRandomArrayElement(Descriptions),
-    name: getRandomArrayElement(Destinations),
+    name: 'Brooklyn',
     pictures: [
       {
-        srс: 'https://loremflickr.com/248/152?random=1',
+        src: 'https://loremflickr.com/248/152?random=5',
         description: 'Event photo'
       },
       {
-        srс: 'https://loremflickr.com/248/152?random=5',
+        src: 'https://loremflickr.com/248/152?random=6',
         description: 'Event photo'
       }
     ]
   },
   {
-    id: '4',
+    id: '5',
     description: getRandomArrayElement(Descriptions),
-    name: getRandomArrayElement(Destinations),
+    name: 'New York',
     pictures: [
       {
-        srс: 'https://loremflickr.com/248/152?random=1',
+        src: 'https://loremflickr.com/248/152?random=5',
         description: 'Event photo'
       },
       {
-        srс: 'https://loremflickr.com/248/152?random=5',
+        src: 'https://loremflickr.com/248/152?random=6',
         description: 'Event photo'
       }
     ]
   },
   {
-    id: '11',
+    id: '6',
     description: getRandomArrayElement(Descriptions),
-    name: getRandomArrayElement(Destinations),
+    name: 'Moscow',
     pictures: [
       {
-        srс: 'https://loremflickr.com/248/152?random=1',
+        src: 'https://loremflickr.com/248/152?random=7',
         description: 'Event photo'
       },
       {
-        srс: 'https://loremflickr.com/248/152?random=5',
+        src: 'https://loremflickr.com/248/152?random=8',
         description: 'Event photo'
       }
     ]

@@ -1,7 +1,3 @@
-const Destinations = [
-  'Amsterdam', 'Berlin', 'Brooklyn ', 'New York', 'Moscow', 'Saint Petersburg', 'London', 'Istanbul', 'Madrid'
-];
-
 const Descriptions = [
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
   'Cras aliquet varius magna, non porta ligula feugiat eget.Fusce tristique felis at fermentum pharetra. Aliquam id orci ut lectus varius viverra.',
@@ -26,4 +22,4 @@ const SortType = {
   SORT_OFFER: 'sort-offer',
 };
 
-export {Destinations,Descriptions,FilterType,SortType};
+export {Descriptions,FilterType,SortType};
