@@ -49,6 +49,7 @@ export default class PointPresentor {
       offer:this.#offer,
       destination:this.#destination,
       onFormSubmit:  this.#handleFormSubmit,
+      onRollupBtn:this.#rollupBtnHandler,
     });
 
     if(prevPointComponent === null || prevPointEditComponent === null){
@@ -108,6 +109,13 @@ export default class PointPresentor {
       this.#pointEditComponent.reset(this.#point);
       this.#replaceFormToCard();
     }
+  };
+
+
+  #rollupBtnHandler = () => {
+    document.querySelector('.trip-main__event-add-btn').disabled = false;
+    this.#pointEditComponent.reset(this.#point);
+    this.#replaceFormToCard();
   };
 
   #handleFormSubmit = (point) => {
