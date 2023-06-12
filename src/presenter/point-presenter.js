@@ -1,6 +1,7 @@
 import { render, replace, remove } from '../framework/render.js';
 import TripEventItem from '../view/waipoint-item-view.js';
 import EditForm from '../view/edit-form-view.js';
+import { UpdateType, UserAction } from '../consts.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -98,8 +99,11 @@ export default class PointPresentor {
   };
 
   #handleFavoriteClick = () => {
-    this.#handleDataChange({point: {...this.#point, isFavorite: !this.#point.isFavorite},
-      offer: this.#offer, destination: this.#destination});
+    this.#handleDataChange(
+      UserAction.UPDATE_TASK,
+      UpdateType.MINOR,
+      {...this.#point, isFavorite: !this.#point.isFavorite},
+    );
   };
 
   #escKeyDownHandler = (evt) => {
@@ -119,7 +123,11 @@ export default class PointPresentor {
   };
 
   #handleFormSubmit = (point) => {
-    this.#handleDataChange({point, offer: this.#offer, destination: this.#destination});
+    this.#handleDataChange(
+      UserAction.UPDATE_TASK,
+      UpdateType.MINOR,
+      point,
+    );
     document.querySelector('.trip-main__event-add-btn').disabled = false;
     this.#replaceFormToCard();
   };

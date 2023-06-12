@@ -80,7 +80,6 @@ export default class TripEventItem extends AbstractView{
     this.#destination = destination;
     this.#handleEditClick = onEditClick;
     this.#handleFavoriteClick = onFavoriteClick;
-
     this.element.querySelector('.event__favorite-icon')
       .addEventListener('click', this.#favoriteClickHandler);
     this.element.querySelector('.event__rollup-btn')

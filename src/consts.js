@@ -22,4 +22,17 @@ const SortType = {
   SORT_OFFER: 'sort-offer',
 };
 
-export {Descriptions,FilterType,SortType};
+const UserAction = {
+  UPDATE_TASK: 'UPDATE_TASK',
+  ADD_TASK: 'ADD_TASK',
+  DELETE_TASK: 'DELETE_TASK',
+};
+
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
+
+export {Descriptions,FilterType,SortType,UserAction,UpdateType};
