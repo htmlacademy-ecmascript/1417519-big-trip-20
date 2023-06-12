@@ -2,6 +2,8 @@ import { render, replace, remove } from '../framework/render.js';
 import TripEventItem from '../view/waipoint-item-view.js';
 import EditForm from '../view/edit-form-view.js';
 import { UpdateType, UserAction } from '../consts.js';
+import { isDatesEqual } from '../utils/point.js';
+
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -51,6 +53,7 @@ export default class PointPresentor {
       destination:this.#destination,
       onFormSubmit:  this.#handleFormSubmit,
       onRollupBtn:this.#rollupBtnHandler,
+      onDeleteClick: this.#handleDeleteClick,
     });
 
     if(prevPointComponent === null || prevPointEditComponent === null){
@@ -120,16 +123,30 @@ export default class PointPresentor {
     document.querySelector('.trip-main__event-add-btn').disabled = false;
     this.#pointEditComponent.reset(this.#point);
     this.#replaceFormToCard();
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
-  #handleFormSubmit = (point) => {
+  #handleFormSubmit = (update) => {
+    const isMinorUpdate = isDatesEqual(this.#point.dateFrom, update.dateFrom) ||
+    isDatesEqual(this.#point.dateTo, update.dateTo);
+
     this.#handleDataChange(
-      UserAction.UPDATE_TASK,
-      UpdateType.MINOR,
-      point,
+      UserAction.UPDATE_POINT,
+      isMinorUpdate
+        ? UpdateType.MINOR
+        : UpdateType.PATCH,
+      update,
     );
     document.querySelector('.trip-main__event-add-btn').disabled = false;
     this.#replaceFormToCard();
+  };
+
+  #handleDeleteClick = (point) => {
+    this.#handleDataChange(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point,
+    );
   };
 }
 

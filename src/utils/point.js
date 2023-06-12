@@ -93,8 +93,12 @@ function sortPointPrice(taskA, taskB) {
   }
 }
 
-function sortPointOFFER() {
+function sortPointOFFER(){}
+
+function isDatesEqual(dateA, dateB) {
+  return (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB, 'D');
 }
+
 
 export {
   humanizePointDateTime,
@@ -110,5 +114,6 @@ export {
   sortPointEvent,
   sortPointTime,
   sortPointPrice,
+  isDatesEqual,
   sortPointOFFER
 };

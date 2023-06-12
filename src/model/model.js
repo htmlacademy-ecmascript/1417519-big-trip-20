@@ -27,7 +27,7 @@ export default class PointsModel extends Observable {
       throw new Error('Can\'t update unexisting point');
     }
 
-    this.points = [
+    this.#points = [
       ...this.#points.slice(0, index),
       update,
       ...this.#points.slice(index + 1)

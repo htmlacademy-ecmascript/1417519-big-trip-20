@@ -51,13 +51,13 @@ export default class BoarderPresenter {
 
   #handleViewAction = (actionType, updateType, update) => {
     switch (actionType) {
-      case UserAction.UPDATE_TASK:
+      case UserAction.UPDATE_POINT:
         this.#pointsModel.updatePoint(updateType,update);
         break;
-      case UserAction.ADD_TASK:
+      case UserAction.ADD_POINT:
         this.#pointsModel.addPoint(updateType,update);
         break;
-      case UserAction.DELETE_TASK:
+      case UserAction.DELETE_POINT:
         this.#pointsModel.deletePoint(updateType, update);
         break;
     }
@@ -106,7 +106,7 @@ export default class BoarderPresenter {
   #renderPoints(points) {
     for(let i = 0; i < points.length; i++){
       this.#renderPoint({point: points[i],offer: this.#pointsOffers,
-        destination:this.Destinations});
+        destination:this.#pointsDestinations});
     }
   }
 
@@ -145,10 +145,11 @@ export default class BoarderPresenter {
       pointListContainer: this.#eventListComponent.element,
       onDataChange: this.#handleViewAction,
       onModeChange: this.#handleModeChange,
-
     });
+
     pointPresenter.init({point,offer,destination});
     this.#pointPresenters.set(point.id, pointPresenter);
+
   }
 
   #renderBoard(){
