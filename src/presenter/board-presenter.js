@@ -4,19 +4,21 @@ import { render, RenderPosition,remove } from '../framework/render.js';
 import TripInfo from '../view/trip-info-view.js';
 import NoPointView from '../view/list-empty-view.js';
 import PointPresentor from './point-presenter.js';
-import { SortType, UpdateType, UserAction } from '../consts.js';
+import { SortType, UpdateType, UserAction,FilterType } from '../consts.js';
 import { sortPointDay,sortPointEvent,sortPointTime,sortPointPrice,sortPointOFFER} from '../utils/point.js';
+import { filter } from '../utils/filter.js';
 const tripMain = document.querySelector('.trip-main');
 
 
 export default class BoarderPresenter {
   #container = null;
   #pointsModel = null;
+  #filterModel = null;
 
   #eventListComponent = new TripEventList();
 
   #sortComponent = null;
-  #noPointComponent = new NoPointView();
+  #noPointComponent = null;
 
 
   #pointsOffers = [];
@@ -24,16 +26,22 @@ export default class BoarderPresenter {
 
   #pointPresenters = new Map();
 
+  #filterType = FilterType.EVERYTHING;
   #currentSortType = SortType.DEFAULT;
 
-  constructor({container,pointsModel}){
+  constructor({container,pointsModel, filterModel}){
     this.#container = container;
     this.#pointsModel = pointsModel;
-
+    this.#filterModel = filterModel;
     this.#pointsModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   get points() {
+    this.#filterType = this.#filterModel.filter;
+    const points = this.#pointsModel.points;
+    const filteredPoints = filter[this.#filterType](points);
+
     switch (this.#currentSortType) {
       case SortType.SORT_DAY:
         return [...this.#pointsModel.points].sort(sortPointDay);
@@ -46,7 +54,7 @@ export default class BoarderPresenter {
       case SortType.SORT_OFFER:
         return [...this.#pointsModel.points].sort(sortPointOFFER);
     }
-    return this.#pointsModel.points;
+    return filteredPoints;
   }
 
   #handleViewAction = (actionType, updateType, update) => {
@@ -136,6 +144,9 @@ export default class BoarderPresenter {
   }
 
   #renderNoPoints() {
+    this.#noPointComponent = new NoPointView({
+      filterType: this.#filterType
+    });
     render(this.#noPointComponent, this.#eventListComponent.element, RenderPosition.AFTERBEGIN);
   }
 
