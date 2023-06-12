@@ -154,7 +154,6 @@ export default class BoarderPresenter {
 
   #renderBoard(){
     render(this.#eventListComponent,this.#container);
-
     const points = this.points;
     const pointCount = points.length;
 
@@ -164,6 +163,6 @@ export default class BoarderPresenter {
     }
 
     this.#renderSort();
-    this.#renderPoints(this.#pointsModel.points);
+    this.#renderPoints(this.points);
   }
 }
