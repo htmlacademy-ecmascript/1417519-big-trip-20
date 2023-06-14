@@ -1,9 +1,21 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { humanizePointDateDayMontsTime } from '../utils/point.js';
+import { getOffer, getDestination } from '../mock/point.js';
 
 import flatpickr from 'flatpickr';
 
 import 'flatpickr/dist/flatpickr.min.css';
+
+const BLANK_POINT = {
+  basePrice: 0,
+  dateFrom: '',
+  dateTo: '',
+  destination: '3',
+  isFavorite: true,
+  offers: [
+  ],
+  type: 'taxi',
+};
 
 function createEditFormTemplate(tripPoint,tripOffer,tripDestination) {
   const {basePrice,destination, type, dateFrom, dateTo} = tripPoint;
@@ -16,6 +28,7 @@ function createEditFormTemplate(tripPoint,tripOffer,tripDestination) {
   const getOffersList = () => {
     const offersList = [];
     for (let i = 0; i < offerObj.offers.length; i++){
+
       const offer = `
     <div class="event__offer-selector">
       <input class="event__offer-checkbox  visually-hidden" id="event-offer-train-1" type="checkbox" name="event-offer-train">
@@ -170,7 +183,7 @@ export default class EditForm extends AbstractStatefulView{
   #handleRollupBtn = null;
   #datepicker = null;
 
-  constructor({point,offer,destination,onFormSubmit,onRollupBtn,onDeleteClick}){
+  constructor({point = BLANK_POINT,offer = getOffer(),destination = getDestination(),onFormSubmit,onRollupBtn,onDeleteClick}){
     super();
     this.#offer = offer;
     this.#destination = destination;

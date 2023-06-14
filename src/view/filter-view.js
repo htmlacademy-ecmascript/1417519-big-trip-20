@@ -6,7 +6,7 @@ function createFilterItem (filter,currentFilterType){
   return `
   <div class="trip-filters__filter">
     <input
-      id="filter-${type}}"
+      id="filter-${type}"
       class="trip-filters__filter-input  visually-hidden"
       type="radio"
       name="trip-filter"

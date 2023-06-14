@@ -97,7 +97,6 @@ export default class PointPresentor {
   }
 
   #handleEditClick = () => {
-    document.querySelector('.trip-main__event-add-btn').disabled = true;
     this.#replaceCardToForm();
   };
 
@@ -112,7 +111,6 @@ export default class PointPresentor {
   #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape') {
       evt.preventDefault();
-      document.querySelector('.trip-main__event-add-btn').disabled = false;
       this.#pointEditComponent.reset(this.#point);
       this.#replaceFormToCard();
     }
@@ -120,7 +118,6 @@ export default class PointPresentor {
 
 
   #rollupBtnHandler = () => {
-    document.querySelector('.trip-main__event-add-btn').disabled = false;
     this.#pointEditComponent.reset(this.#point);
     this.#replaceFormToCard();
     document.removeEventListener('keydown', this.#escKeyDownHandler);
@@ -137,7 +134,6 @@ export default class PointPresentor {
         : UpdateType.PATCH,
       update,
     );
-    document.querySelector('.trip-main__event-add-btn').disabled = false;
     this.#replaceFormToCard();
   };
 

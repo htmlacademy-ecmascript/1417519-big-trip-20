@@ -7,8 +7,10 @@ import PointPresentor from './point-presenter.js';
 import { SortType, UpdateType, UserAction,FilterType } from '../consts.js';
 import { sortPointDay,sortPointEvent,sortPointTime,sortPointPrice,sortPointOFFER} from '../utils/point.js';
 import { filter } from '../utils/filter.js';
-const tripMain = document.querySelector('.trip-main');
+import NewPointPresenter from './new-point-presenter.js';
 
+
+const tripMain = document.querySelector('.trip-main');
 
 export default class BoarderPresenter {
   #container = null;
@@ -20,7 +22,7 @@ export default class BoarderPresenter {
   #sortComponent = null;
   #noPointComponent = null;
 
-
+  #newPointPresenter = null;
   #pointsOffers = [];
   #pointsDestinations = [];
 
@@ -29,10 +31,17 @@ export default class BoarderPresenter {
   #filterType = FilterType.EVERYTHING;
   #currentSortType = SortType.DEFAULT;
 
-  constructor({container,pointsModel, filterModel}){
+  constructor({container,pointsModel, filterModel,onNewPointDestroy}){
     this.#container = container;
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
+
+    this.#newPointPresenter = new NewPointPresenter({
+      pointListContainer:this.#eventListComponent.element,
+      onDataChange: this.#handleViewAction,
+      onDestroy: onNewPointDestroy
+    });
+
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
   }
@@ -44,15 +53,15 @@ export default class BoarderPresenter {
 
     switch (this.#currentSortType) {
       case SortType.SORT_DAY:
-        return [...this.#pointsModel.points].sort(sortPointDay);
+        return filteredPoints.sort(sortPointDay);
       case SortType.SORT_EVENT:
-        return [...this.#pointsModel.points].sort(sortPointEvent);
+        return filteredPoints.sort(sortPointEvent);
       case SortType.SORT_TIME:
-        return [...this.#pointsModel.points].sort(sortPointTime);
+        return filteredPoints.sort(sortPointTime);
       case SortType.SORT_PRICE:
-        return [...this.#pointsModel.points].sort(sortPointPrice);
+        return filteredPoints.sort(sortPointPrice);
       case SortType.SORT_OFFER:
-        return [...this.#pointsModel.points].sort(sortPointOFFER);
+        return filteredPoints.sort(sortPointOFFER);
     }
     return filteredPoints;
   }
@@ -95,7 +104,15 @@ export default class BoarderPresenter {
     this.#renderBoard();
   }
 
+
+  createPoint() {
+    this.#currentSortType = SortType.SORT_DAY;
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this.#newPointPresenter.init();
+  }
+
   #handleModeChange = () => {
+    this.#newPointPresenter.destroy();
     this.#pointPresenters.forEach((presenter) => presenter.resetView());
   };
 
@@ -119,7 +136,7 @@ export default class BoarderPresenter {
   }
 
   #clearBoard({resetSortType = false} = {}){
-
+    this.#newPointPresenter.destroy();
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
 

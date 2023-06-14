@@ -1,7 +1,7 @@
 import { getPoint,getOffer,getDestination } from '../mock/point.js';
 import Observable from '../framework/observable.js';
 
-const POINT_COUNT = 22;
+const POINT_COUNT = 3;
 
 export default class PointsModel extends Observable {
   #points = Array.from({length: POINT_COUNT},getPoint);
