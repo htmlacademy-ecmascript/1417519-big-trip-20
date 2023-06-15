@@ -7,8 +7,7 @@ import PointPresentor from './point-presenter.js';
 import { SortType, UpdateType, UserAction,FilterType } from '../consts.js';
 import { sortPointDay,sortPointEvent,sortPointTime,sortPointPrice,sortPointOFFER} from '../utils/point.js';
 import { filter } from '../utils/filter.js';
-import NewPointPresenter from './new-point-presenter.js';
-
+import NewPointPresenter from './new-point-presentor.js';
 
 const tripMain = document.querySelector('.trip-main');
 

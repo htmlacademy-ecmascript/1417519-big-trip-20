@@ -1,7 +1,7 @@
 import { UpdateType, UserAction } from '../consts.js';
 import { RenderPosition } from '../framework/render.js';
 import { render, remove } from '../framework/render.js';
-import EditForm from '../view/edit-form-view.js';
+import NewPointView from '../view/new-point-view.js';
 import { nanoid } from 'nanoid';
 
 export default class NewPointPresenter {
@@ -22,7 +22,7 @@ export default class NewPointPresenter {
       return;
     }
 
-    this.#pointEditComponent = new EditForm({
+    this.#pointEditComponent = new NewPointView({
       onFormSubmit: this.#handleFormSubmit,
       onDeleteClick: this.#handleDeleteClick
     });

@@ -224,6 +224,13 @@ const moreOffers = [
 
 const destinations = [
   {
+    id: '1',
+    description:'',
+    name: '',
+    pictures: [
+    ]
+  },
+  {
     id: '2',
     description:getRandomArrayElement(Descriptions),
     name: 'Amsterdam',

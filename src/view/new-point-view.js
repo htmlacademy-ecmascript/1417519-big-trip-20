@@ -147,10 +147,8 @@ function createEditFormTemplate(tripPoint,tripOffer,tripDestination) {
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-      <button class="event__reset-btn" type="reset">Delete</button>
-      <button class="event__rollup-btn" type="button">
-        <span class="visually-hidden">Open event</span>
-      </button>
+      <button class="event__reset-btn" type="reset">Cancel</button>
+
     </header>
     <section class="event__details">
       <section class="event__section  event__section--offers">
@@ -163,7 +161,7 @@ function createEditFormTemplate(tripPoint,tripOffer,tripDestination) {
 
       <section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        <p class="event__destination-description">${he.encode(destinationObj.description)}</p>
+        <p class="event__destination-description">${destinationObj.description}</p>
         <div class="event__photos-container">
           <div class="event__photos-tape">
             ${getPicturesList()}
@@ -176,7 +174,7 @@ function createEditFormTemplate(tripPoint,tripOffer,tripDestination) {
 }
 
 
-export default class EditForm extends AbstractStatefulView{
+export default class NewPointView extends AbstractStatefulView{
   #offer = null;
   #destination = null;
 
@@ -189,7 +187,7 @@ export default class EditForm extends AbstractStatefulView{
     this.#offer = offer;
     this.#destination = destination;
 
-    this._setState(EditForm.parsePointToState(point));
+    this._setState(NewPointView.parsePointToState(point));
 
 
     this.#handleFormSubmit = onFormSubmit;
@@ -215,15 +213,11 @@ export default class EditForm extends AbstractStatefulView{
 
   reset(point) {
     this.updateElement(
-      EditForm.parsePointToState(point),
+      NewPointView.parsePointToState(point),
     );
   }
 
   _restoreHandlers = () => {
-    this.element
-      .querySelector('.event__rollup-btn')
-      .addEventListener('click',this.#rollupBtnHandler);
-
     this.element
       .querySelector('form')
       .addEventListener('submit',this.#formSubmitHandler);
@@ -252,7 +246,7 @@ export default class EditForm extends AbstractStatefulView{
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(EditForm.parseStateToPoint(this._state));
+    this.#handleFormSubmit(NewPointView.parseStateToPoint(this._state));
   };
 
   #rollupBtnHandler = (evt) => {
@@ -339,7 +333,7 @@ export default class EditForm extends AbstractStatefulView{
 
   #formDeleteClickHandler = (evt) => {
     evt.preventDefault();
-    this.#handleDeleteClick(EditForm.parseStateToPoint(this._state));
+    this.#handleDeleteClick(NewPointView.parseStateToPoint(this._state));
   };
 
   static parsePointToState(point){
