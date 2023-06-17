@@ -31,9 +31,9 @@ function createEditFormTemplate(tripPoint,tripOffers,tripDestination) {
     for (let i = 0; i < offerObj.offers.length; i++){
       const isChecked = !!tripOffers.find((tripOffer) => tripOffer === offerObj.offers[i].id);
       const offer = `
-    <div class="event__offer-selector">
-      <input class="event__offer-checkbox  visually-hidden" id="event-offer-train-1" type="checkbox" name="event-offer-train"  ${isChecked ? 'Checked' : ''}>
-      <label class="event__offer-label" for="event-offer-train-1">
+      <div class="event__offer-selector">
+      <input class="event__offer-checkbox  visually-hidden" id="${offerObj.offers[i].id}" type="checkbox" name="event-offer-train"  ${isChecked ? 'Checked' : ''}>
+      <label class="event__offer-label" for="${offerObj.offers[i].id}">
         <span class="event__offer-title">${offerObj.offers[i].title}</span>
         &plus;&euro;&nbsp;
         <span class="event__offer-price">${offerObj.offers[i].price}</span>
@@ -276,7 +276,6 @@ export default class EditForm extends AbstractStatefulView{
 
     const selectedDestination = this.#destination
       .find((point)=> point.name === evt.target.value);
-
     const selectedDestinationId = (selectedDestination)
       ? selectedDestination.id
       : null;

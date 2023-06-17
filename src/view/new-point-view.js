@@ -39,8 +39,8 @@ function createEditFormTemplate(tripPoint,tripOffers,tripDestination) {
 
       const offer = `
     <div class="event__offer-selector">
-      <input class="event__offer-checkbox  visually-hidden" id="event-offer-train-1" type="checkbox" name="event-offer-train"  ${isChecked ? 'Checked' : ''}>
-      <label class="event__offer-label" for="event-offer-train-1">
+      <input class="event__offer-checkbox  visually-hidden" id="${offerObj.offers[i].id}" type="checkbox" name="event-offer-train"  ${isChecked ? 'Checked' : ''}>
+      <label class="event__offer-label" for="${offerObj.offers[i].id}">
         <span class="event__offer-title">${offerObj.offers[i].title}</span>
         &plus;&euro;&nbsp;
         <span class="event__offer-price">${offerObj.offers[i].price}</span>
@@ -250,12 +250,15 @@ export default class NewPointView extends AbstractStatefulView{
 
   #offerClickHandler = () => {
     const checkBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
+
     this._setState({
       point: {
         ...this._state.point,
         offers: checkBoxes.map((element) => element.id)
       }
     });
+    console.log(checkBoxes)
+
   };
 
   #formSubmitHandler = (evt) => {
