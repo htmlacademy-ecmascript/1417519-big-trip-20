@@ -18,21 +18,28 @@ const BLANK_POINT = {
   type: 'taxi',
 };
 
-function createEditFormTemplate(tripPoint,tripOffer,tripDestination) {
-  const {basePrice,destination, type, dateFrom, dateTo} = tripPoint;
+function createEditFormTemplate(tripPoint,tripOffers,tripDestination) {
+  const {basePrice,destination, type, dateFrom, dateTo,offers} = tripPoint;
   const dateStart = humanizePointDateDayMontsTime(dateFrom);
   const dateEnd = humanizePointDateDayMontsTime(dateTo);
 
+
   const destinationObj = tripDestination.find((dstn)=>dstn.id === destination);
-  const offerObj = tripOffer.find((offer)=>offer.type === type);
+  const offerObj = tripOffers.find((offer)=>offer.type === type);
+
+  function createDestinationsList (destinations){
+    return destinations.map((destinationPoint) =>`
+    <option value="${destinationPoint.name}"></option>`).join('');
+  }
 
   const getOffersList = () => {
     const offersList = [];
     for (let i = 0; i < offerObj.offers.length; i++){
+      const isChecked = offers.find((tripOffer) => tripOffer === offerObj.offers[i].id);
 
       const offer = `
     <div class="event__offer-selector">
-      <input class="event__offer-checkbox  visually-hidden" id="event-offer-train-1" type="checkbox" name="event-offer-train">
+      <input class="event__offer-checkbox  visually-hidden" id="event-offer-train-1" type="checkbox" name="event-offer-train"  ${isChecked ? 'Checked' : ''}>
       <label class="event__offer-label" for="event-offer-train-1">
         <span class="event__offer-title">${offerObj.offers[i].title}</span>
         &plus;&euro;&nbsp;
@@ -53,6 +60,7 @@ function createEditFormTemplate(tripPoint,tripOffer,tripDestination) {
     }
     return picturesList.join('');
   };
+
 
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
@@ -122,11 +130,7 @@ function createEditFormTemplate(tripPoint,tripOffer,tripDestination) {
         </label>
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${he.encode(destinationObj.name)}" list="destination-list-1">
         <datalist id="destination-list-1">
-          <option value="Amsterdam"></option>
-          <option value="Berlin"></option>
-          <option value="Brooklyn"></option>
-          <option value="New York"></option>
-          <option value="Moscow"></option>
+          ${createDestinationsList(tripDestination)}
         </datalist>
       </div>
 
@@ -180,18 +184,15 @@ export default class NewPointView extends AbstractStatefulView{
 
   #handleDeleteClick = null;
   #handleFormSubmit = null;
-  #handleRollupBtn = null;
   #datepicker = null;
-  constructor({point = BLANK_POINT,offer = getOffer(),destination = getDestination(),onFormSubmit,onRollupBtn,onDeleteClick}){
+  constructor({point = BLANK_POINT,offer = getOffer(),destination = getDestination(),onFormSubmit,onDeleteClick}){
     super();
     this.#offer = offer;
     this.#destination = destination;
-
     this._setState(NewPointView.parsePointToState(point));
 
 
     this.#handleFormSubmit = onFormSubmit;
-    this.#handleRollupBtn = onRollupBtn;
     this.#handleDeleteClick = onDeleteClick;
 
     this._restoreHandlers();
@@ -239,20 +240,30 @@ export default class NewPointView extends AbstractStatefulView{
     this.element.querySelector('.event__reset-btn')
       .addEventListener('click', this.#formDeleteClickHandler);
 
+    this.element.querySelector('.event__available-offers')
+      .addEventListener('change', this.#offerClickHandler);
+
     this.#setDatepickerFrom();
 
     this.#setDatepickerTo();
   };
 
+  #offerClickHandler = () => {
+    const checkBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
+    this._setState({
+      point: {
+        ...this._state.point,
+        offers: checkBoxes.map((element) => element.id)
+      }
+    });
+  };
+
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
+    document.querySelector('.trip-main__event-add-btn').disabled = false;
     this.#handleFormSubmit(NewPointView.parseStateToPoint(this._state));
   };
 
-  #rollupBtnHandler = (evt) => {
-    evt.preventDefault();
-    this.#handleRollupBtn();
-  };
 
   #typeInputClick = (evt) => {
     evt.preventDefault();

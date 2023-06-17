@@ -18,21 +18,21 @@ const BLANK_POINT = {
   type: 'taxi',
 };
 
-function createEditFormTemplate(tripPoint,tripOffer,tripDestination) {
+function createEditFormTemplate(tripPoint,tripOffers,tripDestination) {
   const {basePrice,destination, type, dateFrom, dateTo} = tripPoint;
   const dateStart = humanizePointDateDayMontsTime(dateFrom);
   const dateEnd = humanizePointDateDayMontsTime(dateTo);
 
   const destinationObj = tripDestination.find((dstn)=>dstn.id === destination);
-  const offerObj = tripOffer.find((offer)=>offer.type === type);
+  const offerObj = tripOffers.find((offer)=>offer.type === type);
 
   const getOffersList = () => {
     const offersList = [];
     for (let i = 0; i < offerObj.offers.length; i++){
-
+      const isChecked = !!tripOffers.find((tripOffer) => tripOffer === offerObj.offers[i].id);
       const offer = `
     <div class="event__offer-selector">
-      <input class="event__offer-checkbox  visually-hidden" id="event-offer-train-1" type="checkbox" name="event-offer-train">
+      <input class="event__offer-checkbox  visually-hidden" id="event-offer-train-1" type="checkbox" name="event-offer-train"  ${isChecked ? 'Checked' : ''}>
       <label class="event__offer-label" for="event-offer-train-1">
         <span class="event__offer-title">${offerObj.offers[i].title}</span>
         &plus;&euro;&nbsp;
@@ -53,6 +53,11 @@ function createEditFormTemplate(tripPoint,tripOffer,tripDestination) {
     }
     return picturesList.join('');
   };
+
+  function createDestinationsList (destinations){
+    return destinations.map((destinationPoint) =>`
+    <option value="${destinationPoint.name}"></option>`).join('');
+  }
 
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
@@ -122,11 +127,7 @@ function createEditFormTemplate(tripPoint,tripOffer,tripDestination) {
         </label>
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${he.encode(destinationObj.name)}" list="destination-list-1">
         <datalist id="destination-list-1">
-          <option value="Amsterdam"></option>
-          <option value="Berlin"></option>
-          <option value="Brooklyn"></option>
-          <option value="New York"></option>
-          <option value="Moscow"></option>
+            ${createDestinationsList(tripDestination)}
         </datalist>
       </div>
 
@@ -188,7 +189,6 @@ export default class EditForm extends AbstractStatefulView{
     super();
     this.#offer = offer;
     this.#destination = destination;
-
     this._setState(EditForm.parsePointToState(point));
 
 
@@ -252,6 +252,7 @@ export default class EditForm extends AbstractStatefulView{
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
+    document.querySelector('.trip-main__event-add-btn').disabled = false;
     this.#handleFormSubmit(EditForm.parseStateToPoint(this._state));
   };
 
