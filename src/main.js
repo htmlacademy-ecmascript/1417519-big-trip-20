@@ -13,7 +13,6 @@ const tripEvents = document.querySelector('.trip-events');
 const pointsModel = new PointsModel();
 const filterModel = new FilterModel();
 
-
 const boarderPresenter = new BoarderPresenter({
   container:tripEvents,
   pointsModel,
@@ -45,3 +44,4 @@ render(newPointBtnComponent, tripMainElement);
 
 filterPresenter.init();
 boarderPresenter.init();
+

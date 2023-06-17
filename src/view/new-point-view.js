@@ -25,7 +25,7 @@ function createEditFormTemplate(tripPoint,tripOffers,tripDestination) {
 
 
   const destinationObj = tripDestination.find((dstn)=>dstn.id === destination);
-  const offerObj = tripOffers.find((offer)=>offer.type === type);
+  const allOffersThisType = tripOffers.find((objOffers) => objOffers.type === type).offers;
 
   function createDestinationsList (destinations){
     return destinations.map((destinationPoint) =>`
@@ -34,16 +34,15 @@ function createEditFormTemplate(tripPoint,tripOffers,tripDestination) {
 
   const getOffersList = () => {
     const offersList = [];
-    for (let i = 0; i < offerObj.offers.length; i++){
-      const isChecked = offers.find((tripOffer) => tripOffer === offerObj.offers[i].id);
-
+    for (let i = 0; i < allOffersThisType.length; i++){
+      const isChecked = offers.find((tripOffer) => tripOffer === allOffersThisType[i].id);
       const offer = `
     <div class="event__offer-selector">
-      <input class="event__offer-checkbox  visually-hidden" id="${offerObj.offers[i].id}" type="checkbox" name="event-offer-train"  ${isChecked ? 'Checked' : ''}>
-      <label class="event__offer-label" for="${offerObj.offers[i].id}">
-        <span class="event__offer-title">${offerObj.offers[i].title}</span>
+      <input class="event__offer-checkbox  visually-hidden" id="${allOffersThisType[i].id}" type="checkbox" name="event-offer-train"  ${isChecked ? 'Checked' : ''}>
+      <label class="event__offer-label" for="${allOffersThisType[i].id}">
+        <span class="event__offer-title">${allOffersThisType[i].title}</span>
         &plus;&euro;&nbsp;
-        <span class="event__offer-price">${offerObj.offers[i].price}</span>
+        <span class="event__offer-price">${allOffersThisType[i].price}</span>
       </label>
     </div>`;
       offersList.push(offer);
@@ -189,6 +188,8 @@ export default class NewPointView extends AbstractStatefulView{
     super();
     this.#offer = offer;
     this.#destination = destination;
+
+    this.point = {...point};
     this._setState(NewPointView.parsePointToState(point));
 
 
@@ -241,7 +242,7 @@ export default class NewPointView extends AbstractStatefulView{
       .addEventListener('click', this.#formDeleteClickHandler);
 
     this.element.querySelector('.event__available-offers')
-      .addEventListener('change', this.#offerClickHandler);
+      .addEventListener('click', this.#offerClickHandler);
 
     this.#setDatepickerFrom();
 
@@ -250,15 +251,12 @@ export default class NewPointView extends AbstractStatefulView{
 
   #offerClickHandler = () => {
     const checkBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
-
     this._setState({
       point: {
         ...this._state.point,
-        offers: checkBoxes.map((element) => element.id)
+        offers: checkBoxes.map((offer) => offer.id)
       }
     });
-    console.log(checkBoxes)
-
   };
 
   #formSubmitHandler = (evt) => {
