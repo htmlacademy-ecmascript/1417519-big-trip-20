@@ -252,10 +252,7 @@ export default class NewPointView extends AbstractStatefulView{
   #offerClickHandler = () => {
     const checkBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
     this._setState({
-      point: {
-        ...this._state.point,
-        offers: checkBoxes.map((offer) => offer.id)
-      }
+      offers: checkBoxes.map((offer) => offer.id)
     });
   };
 
@@ -282,14 +279,15 @@ export default class NewPointView extends AbstractStatefulView{
     const selectedDestination = this.#destination
       .find((point)=> point.name === evt.target.value);
 
-    const selectedDestinationId = (selectedDestination)
-      ? selectedDestination.id
-      : null;
+    if(!selectedDestination){
+      evt.target.value = '';
+      return;
+    }
 
     this.updateElement({
 
       ...this._state.point,
-      destination: selectedDestinationId
+      destination: selectedDestination.id
 
     });
   };

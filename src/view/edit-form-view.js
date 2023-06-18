@@ -12,7 +12,6 @@ function createEditFormTemplate(tripPoint,tripOffers,tripDestination) {
   const {basePrice,destination, type, dateFrom, dateTo, offers } = tripPoint;
   const dateStart = humanizePointDateDayMontsTime(dateFrom);
   const dateEnd = humanizePointDateDayMontsTime(dateTo);
-
   const allOffersThisType = tripOffers.find((objOffers) => objOffers.type === type).offers;
   const destinationObj = tripDestination.find((dstn)=>dstn.id === destination);
 
@@ -245,10 +244,9 @@ export default class EditForm extends AbstractStatefulView{
 
   #offerClickHandler = () => {
     const checkBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
+
     this._setState({
-      point: {
-        offers: checkBoxes.map((offer) => offer.id)
-      }
+      offers: checkBoxes.map((offer) => offer.id)
     });
   };
 
@@ -278,14 +276,16 @@ export default class EditForm extends AbstractStatefulView{
 
     const selectedDestination = this.#destination
       .find((point)=> point.name === evt.target.value);
-    const selectedDestinationId = (selectedDestination)
-      ? selectedDestination.id
-      : null;
+
+    if(!selectedDestination){
+      evt.target.value = '';
+      return;
+    }
 
     this.updateElement({
 
       ...this._state.point,
-      destination: selectedDestinationId
+      destination: selectedDestination.id
 
     });
   };
@@ -294,7 +294,6 @@ export default class EditForm extends AbstractStatefulView{
     evt.preventDefault();
 
     this._setState({
-
       ...this._state.point,
       basePrice: evt.target.value
 
@@ -349,7 +348,7 @@ export default class EditForm extends AbstractStatefulView{
   }
 
   static parseStateToPoint(state){
-    const point = {...state};
-    return point;
+    this.point = {...state};
+    return this.point;
   }
 }
