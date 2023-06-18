@@ -247,7 +247,6 @@ export default class EditForm extends AbstractStatefulView{
     const checkBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
     this._setState({
       point: {
-        ...this._state.point,
         offers: checkBoxes.map((offer) => offer.id)
       }
     });
