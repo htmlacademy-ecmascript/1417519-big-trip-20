@@ -3,10 +3,10 @@ import { humanizePointDateTime,humanizePointDateDayMonts } from '../utils/point.
 import { getPointDuration } from '../utils/point.js';
 
 function createTripEventsItemTemplate(tripPoint,tripOffer,tripDestination) {
-  const {basePrice, dateFrom, dateTo, destination, isFavorite, type} = tripPoint;
+  const {basePrice, dateFrom, dateTo, destination, isFavorite, type, offers} = tripPoint;
 
+  const allOffersThisType = tripOffer.find((objOffers) => objOffers.type === type).offers;
   const destinationObj = tripDestination.find((dstn)=>dstn.id === destination);
-  const offerObj = tripOffer.find((offer)=>offer.type === type);
 
   const dateMontsDay = humanizePointDateDayMonts(dateFrom);
   const dateStart = humanizePointDateTime(dateFrom);
@@ -16,15 +16,14 @@ function createTripEventsItemTemplate(tripPoint,tripOffer,tripDestination) {
   function isFavoriteTrue (bolean){
     return bolean ? 'event__favorite-btn--active' : '';
   }
-
   const getOffersList = () => {
     const offersList = [];
-    for (let i = 0; i < offerObj.offers.length; i++){
+    for (let i = 0; i < offers.length; i++){
       const offer = `
         <li class="event__offer">
-        <span class="event__offer-title">${offerObj.offers[i].title}</span>
+        <span class="event__offer-title">${allOffersThisType[i].title}</span>
         &plus;&euro;&nbsp;
-        <span class="event__offer-price">${offerObj.offers[i].price}</span>
+        <span class="event__offer-price">${allOffersThisType[i].price}</span>
       </li>`;
       offersList.push(offer);
     }
@@ -80,7 +79,6 @@ export default class TripEventItem extends AbstractView{
     this.#destination = destination;
     this.#handleEditClick = onEditClick;
     this.#handleFavoriteClick = onFavoriteClick;
-
     this.element.querySelector('.event__favorite-icon')
       .addEventListener('click', this.#favoriteClickHandler);
     this.element.querySelector('.event__rollup-btn')

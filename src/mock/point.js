@@ -54,12 +54,12 @@ const moreOffers = [
     'type': 'taxi',
     'offers': [
       {
-        'id': nanoid(),
+        'id': '1',
         'title': 'Order an economy taxi',
         'price': 200
       },
       {
-        'id': nanoid(),
+        'id': '2',
         'title': 'Order a comfort class taxi',
         'price': 280
       },
@@ -223,6 +223,13 @@ const moreOffers = [
 ];
 
 const destinations = [
+  {
+    id: '1',
+    description:'',
+    name: '',
+    pictures: [
+    ]
+  },
   {
     id: '2',
     description:getRandomArrayElement(Descriptions),

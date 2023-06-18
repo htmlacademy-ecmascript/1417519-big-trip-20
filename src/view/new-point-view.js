@@ -7,20 +7,37 @@ import flatpickr from 'flatpickr';
 
 import 'flatpickr/dist/flatpickr.min.css';
 
+const BLANK_POINT = {
+  basePrice: 0,
+  dateFrom: '',
+  dateTo: '',
+  destination: '3',
+  isFavorite: true,
+  offers: [
+  ],
+  type: 'taxi',
+};
 
 function createEditFormTemplate(tripPoint,tripOffers,tripDestination) {
-  const {basePrice,destination, type, dateFrom, dateTo, offers } = tripPoint;
+  const {basePrice,destination, type, dateFrom, dateTo,offers} = tripPoint;
   const dateStart = humanizePointDateDayMontsTime(dateFrom);
   const dateEnd = humanizePointDateDayMontsTime(dateTo);
-  const allOffersThisType = tripOffers.find((objOffers) => objOffers.type === type).offers;
+
+
   const destinationObj = tripDestination.find((dstn)=>dstn.id === destination);
+  const allOffersThisType = tripOffers.find((objOffers) => objOffers.type === type).offers;
+
+  function createDestinationsList (destinations){
+    return destinations.map((destinationPoint) =>`
+    <option value="${destinationPoint.name}"></option>`).join('');
+  }
 
   const getOffersList = () => {
     const offersList = [];
     for (let i = 0; i < allOffersThisType.length; i++){
       const isChecked = offers.find((tripOffer) => tripOffer === allOffersThisType[i].id);
       const offer = `
-      <div class="event__offer-selector">
+    <div class="event__offer-selector">
       <input class="event__offer-checkbox  visually-hidden" id="${allOffersThisType[i].id}" type="checkbox" name="event-offer-train"  ${isChecked ? 'Checked' : ''}>
       <label class="event__offer-label" for="${allOffersThisType[i].id}">
         <span class="event__offer-title">${allOffersThisType[i].title}</span>
@@ -43,10 +60,6 @@ function createEditFormTemplate(tripPoint,tripOffers,tripDestination) {
     return picturesList.join('');
   };
 
-  function createDestinationsList (destinations){
-    return destinations.map((destinationPoint) =>`
-    <option value="${destinationPoint.name}"></option>`).join('');
-  }
 
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
@@ -116,7 +129,7 @@ function createEditFormTemplate(tripPoint,tripOffers,tripDestination) {
         </label>
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${he.encode(destinationObj.name)}" list="destination-list-1">
         <datalist id="destination-list-1">
-            ${createDestinationsList(tripDestination)}
+          ${createDestinationsList(tripDestination)}
         </datalist>
       </div>
 
@@ -137,10 +150,8 @@ function createEditFormTemplate(tripPoint,tripOffers,tripDestination) {
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-      <button class="event__reset-btn" type="reset">Delete</button>
-      <button class="event__rollup-btn" type="button">
-        <span class="visually-hidden">Open event</span>
-      </button>
+      <button class="event__reset-btn" type="reset">Cancel</button>
+
     </header>
     <section class="event__details">
       <section class="event__section  event__section--offers">
@@ -153,7 +164,7 @@ function createEditFormTemplate(tripPoint,tripOffers,tripDestination) {
 
       <section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        <p class="event__destination-description">${he.encode(destinationObj.description)}</p>
+        <p class="event__destination-description">${destinationObj.description}</p>
         <div class="event__photos-container">
           <div class="event__photos-tape">
             ${getPicturesList()}
@@ -166,23 +177,23 @@ function createEditFormTemplate(tripPoint,tripOffers,tripDestination) {
 }
 
 
-export default class EditForm extends AbstractStatefulView{
+export default class NewPointView extends AbstractStatefulView{
   #offer = null;
   #destination = null;
 
   #handleDeleteClick = null;
   #handleFormSubmit = null;
-  #handleRollupBtn = null;
   #datepicker = null;
-  constructor({point,offer = getOffer(),destination = getDestination(),onFormSubmit,onRollupBtn,onDeleteClick}){
+  constructor({point = BLANK_POINT,offer = getOffer(),destination = getDestination(),onFormSubmit,onDeleteClick}){
     super();
     this.#offer = offer;
     this.#destination = destination;
+
     this.point = {...point};
-    this._setState(EditForm.parsePointToState(point));
+    this._setState(NewPointView.parsePointToState(point));
+
 
     this.#handleFormSubmit = onFormSubmit;
-    this.#handleRollupBtn = onRollupBtn;
     this.#handleDeleteClick = onDeleteClick;
 
     this._restoreHandlers();
@@ -204,15 +215,11 @@ export default class EditForm extends AbstractStatefulView{
 
   reset(point) {
     this.updateElement(
-      EditForm.parsePointToState(point),
+      NewPointView.parsePointToState(point),
     );
   }
 
   _restoreHandlers = () => {
-    this.element
-      .querySelector('.event__rollup-btn')
-      .addEventListener('click',this.#rollupBtnHandler);
-
     this.element
       .querySelector('form')
       .addEventListener('submit',this.#formSubmitHandler);
@@ -244,7 +251,6 @@ export default class EditForm extends AbstractStatefulView{
 
   #offerClickHandler = () => {
     const checkBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
-
     this._setState({
       offers: checkBoxes.map((offer) => offer.id)
     });
@@ -253,13 +259,9 @@ export default class EditForm extends AbstractStatefulView{
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
     document.querySelector('.trip-main__event-add-btn').disabled = false;
-    this.#handleFormSubmit(EditForm.parseStateToPoint(this._state));
+    this.#handleFormSubmit(NewPointView.parseStateToPoint(this._state));
   };
 
-  #rollupBtnHandler = (evt) => {
-    evt.preventDefault();
-    this.#handleRollupBtn();
-  };
 
   #typeInputClick = (evt) => {
     evt.preventDefault();
@@ -294,6 +296,7 @@ export default class EditForm extends AbstractStatefulView{
     evt.preventDefault();
 
     this._setState({
+
       ...this._state.point,
       basePrice: evt.target.value
 
@@ -340,7 +343,7 @@ export default class EditForm extends AbstractStatefulView{
 
   #formDeleteClickHandler = (evt) => {
     evt.preventDefault();
-    this.#handleDeleteClick(EditForm.parseStateToPoint(this._state));
+    this.#handleDeleteClick(NewPointView.parseStateToPoint(this._state));
   };
 
   static parsePointToState(point){
@@ -348,7 +351,7 @@ export default class EditForm extends AbstractStatefulView{
   }
 
   static parseStateToPoint(state){
-    this.point = {...state};
-    return this.point;
+    const point = {...state};
+    return point;
   }
 }

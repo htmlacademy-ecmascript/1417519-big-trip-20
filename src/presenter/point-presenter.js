@@ -1,6 +1,9 @@
 import { render, replace, remove } from '../framework/render.js';
 import TripEventItem from '../view/waipoint-item-view.js';
 import EditForm from '../view/edit-form-view.js';
+import { UpdateType, UserAction } from '../consts.js';
+import { isDatesEqual } from '../utils/point.js';
+
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -50,6 +53,7 @@ export default class PointPresentor {
       destination:this.#destination,
       onFormSubmit:  this.#handleFormSubmit,
       onRollupBtn:this.#rollupBtnHandler,
+      onDeleteClick: this.#handleDeleteClick,
     });
 
     if(prevPointComponent === null || prevPointEditComponent === null){
@@ -98,8 +102,11 @@ export default class PointPresentor {
   };
 
   #handleFavoriteClick = () => {
-    this.#handleDataChange({point: {...this.#point, isFavorite: !this.#point.isFavorite},
-      offer: this.#offer, destination: this.#destination});
+    this.#handleDataChange(
+      UserAction.UPDATE_POINT,
+      UpdateType.MINOR,
+      {...this.#point, isFavorite: !this.#point.isFavorite},
+    );
   };
 
   #escKeyDownHandler = (evt) => {
@@ -116,10 +123,29 @@ export default class PointPresentor {
     document.querySelector('.trip-main__event-add-btn').disabled = false;
     this.#pointEditComponent.reset(this.#point);
     this.#replaceFormToCard();
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
-  #handleFormSubmit = (point) => {
-    this.#handleDataChange({point, offer: this.#offer, destination: this.#destination});
+  #handleFormSubmit = (update) => {
+    const isMinorUpdate = isDatesEqual(this.#point.dateFrom, update.dateFrom) ||
+    isDatesEqual(this.#point.dateTo, update.dateTo);
+
+    this.#handleDataChange(
+      UserAction.UPDATE_POINT,
+      isMinorUpdate
+        ? UpdateType.MINOR
+        : UpdateType.PATCH,
+      update,
+    );
+    this.#replaceFormToCard();
+  };
+
+  #handleDeleteClick = (point) => {
+    this.#handleDataChange(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point,
+    );
     document.querySelector('.trip-main__event-add-btn').disabled = false;
     this.#replaceFormToCard();
   };
