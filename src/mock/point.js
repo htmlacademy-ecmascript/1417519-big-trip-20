@@ -10,8 +10,7 @@ const point = [ {
   'destination': '2',
   'isFavorite': false,
   'offers': [
-    nanoid()
-
+    '2'
   ],
   'type': 'taxi',
 },
@@ -22,9 +21,7 @@ const point = [ {
   'destination': '3',
   'isFavorite': true,
   'offers': [
-    nanoid()
-    ,nanoid()
-
+    '1','2'
   ],
   'type': 'taxi',
 },
@@ -35,7 +32,7 @@ const point = [ {
   'destination': '4',
   'isFavorite': true,
   'offers': [
-    nanoid()
+    '1'
   ],
   'type': 'taxi',
 },
@@ -46,7 +43,7 @@ const point = [ {
   'destination': '5',
   'isFavorite': true,
   'offers': [
-    nanoid()
+    '1'
   ],
   'type': 'taxi',
 },
@@ -57,12 +54,12 @@ const moreOffers = [
     'type': 'taxi',
     'offers': [
       {
-        'id': nanoid(),
+        'id': '1',
         'title': 'Order an economy taxi',
         'price': 200
       },
       {
-        'id': nanoid(),
+        'id': '2',
         'title': 'Order a comfort class taxi',
         'price': 280
       },
