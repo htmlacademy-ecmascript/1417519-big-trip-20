@@ -5,6 +5,10 @@ import FilterModel from './model/filter-model.js';
 import { render } from './framework/render.js';
 import NewPointBtnView from './view/new-point-btn-view.js';
 import PointApiService from './point-api-service.js';
+import { OffersModel } from './model/offers-model.js';
+import { DestinationsModel } from './model/destination-model.js';
+import OffersApiService from './offers-api.js';
+import DestinationsApiService from './destination-api.js';
 
 
 const AUTHORIZATION = 'Basic hwedfS4wwc21sa2q';
@@ -14,6 +18,14 @@ const tripMainElement = document.querySelector('.trip-main');
 const controlsFilters = document.querySelector('.trip-controls__filters');
 const tripEvents = document.querySelector('.trip-events');
 
+const offersModel = new OffersModel({
+  offersApiService: new OffersApiService(END_POINT, AUTHORIZATION)
+});
+
+
+const destinationsModel = new DestinationsModel({
+  destinationsApiService: new DestinationsApiService(END_POINT, AUTHORIZATION)
+});
 
 const pointsModel = new PointsModel({
   pointApiService: new PointApiService(END_POINT, AUTHORIZATION)
@@ -24,6 +36,8 @@ const filterModel = new FilterModel();
 const boarderPresenter = new BoarderPresenter({
   container:tripEvents,
   pointsModel,
+  destinationsModel,
+  offersModel,
   filterModel,
   onNewPointDestroy: handleNewPointFormClose
 });
@@ -47,9 +61,11 @@ function handleNewPointBtnClick(){
   boarderPresenter.createPoint();
   newPointBtnComponent.element.disabled = true;
 }
-
-render(newPointBtnComponent, tripMainElement);
-
+destinationsModel.init();
+offersModel.init();
 filterPresenter.init();
 boarderPresenter.init();
-
+pointsModel.init()
+  .finally(() => {
+    render(newPointBtnComponent, tripMainElement);
+  });
