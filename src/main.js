@@ -22,7 +22,6 @@ const offersModel = new OffersModel({
   offersApiService: new OffersApiService(END_POINT, AUTHORIZATION)
 });
 
-
 const destinationsModel = new DestinationsModel({
   destinationsApiService: new DestinationsApiService(END_POINT, AUTHORIZATION)
 });
@@ -62,11 +61,13 @@ function handleNewPointBtnClick(){
   newPointBtnComponent.element.disabled = true;
 }
 
+
 filterPresenter.init();
 boarderPresenter.init();
+destinationsModel.init();
+offersModel.init();
 pointsModel.init()
   .finally(() => {
     render(newPointBtnComponent, tripMainElement);
   });
-destinationsModel.init();
-offersModel.init();
+

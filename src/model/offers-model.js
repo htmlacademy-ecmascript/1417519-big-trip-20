@@ -13,8 +13,7 @@ class OffersModel extends Observable{
 
   async init () {
     try {
-      const response = await this.#offersApiService.offers;
-      this.#offers = response;
+      this.#offers = await this.#offersApiService.offers;
       this._notify(UpdateType.INIT);
 
     } catch(err) {

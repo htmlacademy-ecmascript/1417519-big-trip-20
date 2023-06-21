@@ -13,8 +13,7 @@ class DestinationsModel extends Observable{
 
   async init () {
     try {
-      const response = await this.#destinationsApiService.destinations;
-      this.#destinations = response;
+      this.#destinations = await this.#destinationsApiService.destinations;
       this._notify(UpdateType.INIT);
     } catch(err) {
       this.#destinations = [];
