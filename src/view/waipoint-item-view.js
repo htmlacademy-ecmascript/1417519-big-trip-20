@@ -4,7 +4,7 @@ import { getPointDuration } from '../utils/point.js';
 
 function createTripEventsItemTemplate(tripPoint,tripOffer,tripDestination) {
   const {basePrice, dateFrom, dateTo, destination, isFavorite, type, offers} = tripPoint;
-
+console.log(tripOffer)
   const allOffersThisType = tripOffer.find((objOffers) => objOffers.type === type).offers;
 
   const destinationObj = tripDestination.find((dstn)=>dstn.id === destination);
