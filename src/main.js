@@ -20,7 +20,6 @@ const tripEvents = document.querySelector('.trip-events');
 
 const offersModel = new OffersModel({
   offersApiService: new OffersApiService(END_POINT, AUTHORIZATION)
-
 });
 
 

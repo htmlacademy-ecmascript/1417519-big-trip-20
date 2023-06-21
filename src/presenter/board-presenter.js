@@ -9,8 +9,13 @@ import { sortPointDay,sortPointEvent,sortPointTime,sortPointPrice,sortPointOFFER
 import { filter } from '../utils/filter.js';
 import NewPointPresenter from './new-point-presentor.js';
 import LoadingView from '../view/loading-view.js';
+import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 
 const tripMain = document.querySelector('.trip-main');
+const TimeLimit = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000,
+};
 
 export default class BoarderPresenter {
   #container = null;
@@ -23,23 +28,28 @@ export default class BoarderPresenter {
   #noPointComponent = null;
 
   #newPointPresenter = null;
-  #pointsOffers = [];
-  #pointsDestinations = [];
+  #offersModel = [];
+  #destinationsModel = [];
 
   #pointPresenters = new Map();
 
   #filterType = FilterType.EVERYTHING;
   #currentSortType = SortType.DEFAULT;
   #isLoading = true;
-
+  #uiBlocker = new UiBlocker({
+    lowerLimit: TimeLimit.LOWER_LIMIT,
+    upperLimit: TimeLimit.UPPER_LIMIT
+  });
 
   constructor({container,pointsModel, destinationsModel,offersModel,filterModel,onNewPointDestroy}){
     this.#container = container;
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
-    this.#pointsDestinations = destinationsModel;
-    this.#pointsOffers = offersModel;
+    this.#destinationsModel = destinationsModel;
+    this.#offersModel = offersModel;
     this.#newPointPresenter = new NewPointPresenter({
+      destinationsModel:  this.#destinationsModel.destinations,
+      offersModel:this.#offersModel.offers,
       pointListContainer:this.#eventListComponent.element,
       onDataChange: this.#handleViewAction,
       onDestroy: onNewPointDestroy
@@ -47,6 +57,8 @@ export default class BoarderPresenter {
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
+    this.#offersModel.addObserver(this.#handleModelEvent);
+    this.#destinationsModel.addObserver(this.#handleModelEvent);
   }
 
   get points() {
@@ -70,18 +82,35 @@ export default class BoarderPresenter {
   }
 
 
-  #handleViewAction = (actionType, updateType, update) => {
+  #handleViewAction = async (actionType, updateType, update) => {
+    this.#uiBlocker.block();
     switch (actionType) {
       case UserAction.UPDATE_POINT:
-        this.#pointsModel.updatePoint(updateType,update);
+        this.#pointPresenters.get(update.id).setSaving();
+        try {
+          await this.#pointsModel.updateTask(updateType, update);
+        } catch(err) {
+          this.#pointPresenters.get(update.id).setAborting();
+        }
         break;
       case UserAction.ADD_POINT:
-        this.#pointsModel.addPoint(updateType,update);
+        this.#newPointPresenter.setSaving();
+        try {
+          await this.#pointsModel.addTask(updateType, update);
+        } catch(err) {
+          this.#newPointPresenter.setAborting();
+        }
         break;
       case UserAction.DELETE_POINT:
-        this.#pointsModel.deletePoint(updateType, update);
+        this.#pointPresenters.get(update.id).setDeleting();
+        try {
+          await this.#pointsModel.deleteTask(updateType, update);
+        } catch(err) {
+          this.#pointPresenters.get(update.id).setAborting();
+        }
         break;
     }
+    this.#uiBlocker.unblock();
   };
 
   #handleModelEvent = (updateType, data) => {
@@ -98,6 +127,7 @@ export default class BoarderPresenter {
         this.#renderBoard();
         break;
       case UpdateType.INIT:
+        this.#clearBoard();
         this.#isLoading = false;
         remove(this.#loadingComponent);
         this.#renderBoard();
@@ -136,9 +166,10 @@ export default class BoarderPresenter {
 
   #renderPoints(points) {
     for(let i = 0; i < points.length; i++){
-      this.#renderPoint({point: points[i],offer: this.#pointsOffers,
-        destination:this.#pointsDestinations});
+      this.#renderPoint({point: points[i],offer: this.#offersModel.offers,
+        destination:this.#destinationsModel.destinations});
     }
+
   }
 
   #clearBoard({resetSortType = false} = {}){

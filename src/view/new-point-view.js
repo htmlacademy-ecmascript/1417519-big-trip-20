@@ -187,7 +187,6 @@ export default class NewPointView extends AbstractStatefulView{
     super();
     this.#offer = offer;
     this.#destination = destination;
-
     this.point = {...point};
     this._setState(NewPointView.parsePointToState(point));
 

@@ -10,6 +10,7 @@ class OffersModel extends Observable{
     this.#offersApiService = offersApiService;
   }
 
+
   async init () {
     try {
       const response = await this.#offersApiService.offers;
