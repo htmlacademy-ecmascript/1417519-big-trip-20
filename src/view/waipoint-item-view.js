@@ -6,6 +6,7 @@ function createTripEventsItemTemplate(tripPoint,tripOffer,tripDestination) {
   const {basePrice, dateFrom, dateTo, destination, isFavorite, type, offers} = tripPoint;
 
   const allOffersThisType = tripOffer.find((objOffers) => objOffers.type === type).offers;
+
   const destinationObj = tripDestination.find((dstn)=>dstn.id === destination);
 
   const dateMontsDay = humanizePointDateDayMonts(dateFrom);
@@ -86,7 +87,7 @@ export default class TripEventItem extends AbstractView{
   }
 
   get template() {
-    return createTripEventsItemTemplate(this.#point, this.#offer, this.#destination);
+    return createTripEventsItemTemplate(this.#point, this.#offer.offers, this.#destination.destinations);
   }
 
   #editClickHandler = (evt) => {
