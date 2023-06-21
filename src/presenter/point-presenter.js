@@ -20,21 +20,22 @@ export default class PointPresentor {
   #pointEditComponent = null;
 
   #point = null;
-  #offer = null;
-  #destination = null;
+  #offer = [];
+  #destination = [];
 
   #mode = Mode.DEFAULT;
 
-  constructor({pointListContainer,onDataChange,onModeChange}) {
+  constructor({pointListContainer,onDataChange,onModeChange,destinationsModel,offersModel}) {
     this.#pointListContainer = pointListContainer;
     this.#handleDataChange = onDataChange;
     this.#handleModeChange = onModeChange;
+    this.#offer = offersModel;
+    this.#destination = destinationsModel;
+
   }
 
-  init({point,offer,destination}){
+  init({point}){
     this.#point = point;
-    this.#offer = offer;
-    this.#destination = destination;
 
     const prevPointComponent = this.#pointComponent;
     const prevPointEditComponent = this.#pointEditComponent;
@@ -74,6 +75,41 @@ export default class PointPresentor {
   destroy(){
     remove(this.#pointComponent);
     remove(this.#pointEditComponent);
+  }
+
+  setSaving () {
+    if (this.#mode === Mode.EDITTING) {
+      this.#pointEditComponent.updateElement({
+        isDisabled: true,
+        isSaving: true,
+      });
+    }
+  }
+
+  setDeleting () {
+    if (this.#mode === Mode.EDITTING) {
+      this.#pointEditComponent.updateElement({
+        isDisabled: true,
+        isDeleting: true,
+      });
+    }
+  }
+
+  setAborting() {
+    if (this.#mode === Mode.DEFAULT) {
+      this.#pointComponent.shake();
+      return;
+    }
+
+    const resetFormState = () => {
+      this.#pointEditComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this.#pointEditComponent.shake(resetFormState);
   }
 
   resetView() {

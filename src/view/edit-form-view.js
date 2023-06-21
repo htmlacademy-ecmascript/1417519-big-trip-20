@@ -1,6 +1,5 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { humanizePointDateDayMontsTime } from '../utils/point.js';
-import { getOffer, getDestination } from '../mock/point.js';
 import he from 'he';
 
 import flatpickr from 'flatpickr';
@@ -174,7 +173,7 @@ export default class EditForm extends AbstractStatefulView{
   #handleFormSubmit = null;
   #handleRollupBtn = null;
   #datepicker = null;
-  constructor({point,offer = getOffer(),destination = getDestination(),onFormSubmit,onRollupBtn,onDeleteClick}){
+  constructor({point,offer,destination,onFormSubmit,onRollupBtn,onDeleteClick}){
     super();
     this.#offer = offer;
     this.#destination = destination;
@@ -190,7 +189,7 @@ export default class EditForm extends AbstractStatefulView{
   }
 
   get template() {
-    return createEditFormTemplate(this._state,this.#offer,this.#destination);
+    return createEditFormTemplate(this._state,this.#offer.offers,this.#destination.destinations);
   }
 
   removeElement(){
