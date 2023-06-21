@@ -48,8 +48,8 @@ export default class BoarderPresenter {
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
     this.#newPointPresenter = new NewPointPresenter({
-      destinationsModel:  this.#destinationsModel.destinations,
-      offersModel:this.#offersModel.offers,
+      destinationsModel:  this.#destinationsModel,
+      offersModel:this.#offersModel,
       pointListContainer:this.#eventListComponent.element,
       onDataChange: this.#handleViewAction,
       onDestroy: onNewPointDestroy

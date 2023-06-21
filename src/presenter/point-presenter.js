@@ -20,8 +20,8 @@ export default class PointPresentor {
   #pointEditComponent = null;
 
   #point = null;
-  #offer = null;
-  #destination = null;
+  #offer = [];
+  #destination = [];
 
   #mode = Mode.DEFAULT;
 

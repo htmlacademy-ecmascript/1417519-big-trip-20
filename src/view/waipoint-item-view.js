@@ -6,10 +6,9 @@ function createTripEventsItemTemplate(tripPoint,tripOffer,tripDestination) {
   const {basePrice, dateFrom, dateTo, destination, isFavorite, type, offers} = tripPoint;
 
   const allOffersThisType = tripOffer.find((objOffers) => objOffers.type === type).offers;
+
   const destinationObj = tripDestination.find((dstn)=>dstn.id === destination);
-  console.log(tripPoint)
-  console.log(allOffersThisType)
-  console.log(destinationObj)
+
   const dateMontsDay = humanizePointDateDayMonts(dateFrom);
   const dateStart = humanizePointDateTime(dateFrom);
   const dateEnd = humanizePointDateTime(dateTo);
