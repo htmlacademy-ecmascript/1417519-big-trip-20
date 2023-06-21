@@ -1,4 +1,3 @@
-import { getOffer,getDestination } from '../mock/point.js';
 import Observable from '../framework/observable.js';
 import { UpdateType } from '../consts.js';
 
@@ -6,9 +5,6 @@ import { UpdateType } from '../consts.js';
 export default class PointsModel extends Observable {
   #pointApiService = null;
   #points = [];
-
-  #offer = getOffer();
-  #destination = getDestination();
 
   constructor({pointApiService}) {
     super();
@@ -29,14 +25,6 @@ export default class PointsModel extends Observable {
 
   get points(){
     return this.#points;
-  }
-
-  get offers(){
-    return this.#offer;
-  }
-
-  get destinations(){
-    return this.#destination;
   }
 
 

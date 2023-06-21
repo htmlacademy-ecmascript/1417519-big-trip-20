@@ -20,6 +20,7 @@ const tripEvents = document.querySelector('.trip-events');
 
 const offersModel = new OffersModel({
   offersApiService: new OffersApiService(END_POINT, AUTHORIZATION)
+
 });
 
 
@@ -61,11 +62,12 @@ function handleNewPointBtnClick(){
   boarderPresenter.createPoint();
   newPointBtnComponent.element.disabled = true;
 }
-destinationsModel.init();
-offersModel.init();
+
 filterPresenter.init();
 boarderPresenter.init();
 pointsModel.init()
   .finally(() => {
     render(newPointBtnComponent, tripMainElement);
   });
+destinationsModel.init();
+offersModel.init();

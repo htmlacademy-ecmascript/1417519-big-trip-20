@@ -16,8 +16,6 @@ export default class BoarderPresenter {
   #container = null;
   #pointsModel = null;
   #filterModel = null;
-  #destinationsModel = null;
-  #offersModel = null;
   #eventListComponent = new TripEventList();
   #loadingComponent = new LoadingView();
 
@@ -39,9 +37,8 @@ export default class BoarderPresenter {
     this.#container = container;
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
-    this.#destinationsModel = destinationsModel;
-    this.#offersModel = offersModel;
-
+    this.#pointsDestinations = destinationsModel;
+    this.#pointsOffers = offersModel;
     this.#newPointPresenter = new NewPointPresenter({
       pointListContainer:this.#eventListComponent.element,
       onDataChange: this.#handleViewAction,
@@ -109,9 +106,6 @@ export default class BoarderPresenter {
   };
 
   init(){
-    this.#pointsOffers = [...this.#pointsModel.offers];
-    this.#pointsDestinations = [...this.#pointsModel.destinations];
-console.log(this.#pointsOffers);
     render(new TripInfo(),tripMain,'afterbegin');
     this.#renderBoard();
   }

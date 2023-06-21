@@ -1,6 +1,5 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { humanizePointDateDayMontsTime } from '../utils/point.js';
-import { getOffer, getDestination } from '../mock/point.js';
 import he from 'he';
 
 import flatpickr from 'flatpickr';
@@ -184,7 +183,7 @@ export default class NewPointView extends AbstractStatefulView{
   #handleDeleteClick = null;
   #handleFormSubmit = null;
   #datepicker = null;
-  constructor({point = BLANK_POINT,offer = getOffer(),destination = getDestination(),onFormSubmit,onDeleteClick}){
+  constructor({point = BLANK_POINT,offer ,destination ,onFormSubmit,onDeleteClick}){
     super();
     this.#offer = offer;
     this.#destination = destination;
