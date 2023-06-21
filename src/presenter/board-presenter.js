@@ -166,8 +166,7 @@ export default class BoarderPresenter {
 
   #renderPoints(points) {
     for(let i = 0; i < points.length; i++){
-      this.#renderPoint({point: points[i],offer: this.#offersModel.offers,
-        destination:this.#destinationsModel.destinations});
+      this.#renderPoint({point: points[i]});
     }
 
   }
@@ -210,14 +209,16 @@ export default class BoarderPresenter {
   }
 
 
-  #renderPoint({point,offer,destination}){
+  #renderPoint({point}){
     const pointPresenter = new PointPresentor({
       pointListContainer: this.#eventListComponent.element,
       onDataChange: this.#handleViewAction,
       onModeChange: this.#handleModeChange,
+      destinationsModel: this.#destinationsModel,
+      offersModel: this.#offersModel,
     });
 
-    pointPresenter.init({point,offer,destination});
+    pointPresenter.init({point});
     this.#pointPresenters.set(point.id, pointPresenter);
 
   }

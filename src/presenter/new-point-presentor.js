@@ -13,8 +13,7 @@ export default class NewPointPresenter {
 
   #pointEditComponent = null;
 
-  constructor({destinationsModel,offersModel,
-    pointListContainer, onDataChange, onDestroy}) {
+  constructor({destinationsModel,offersModel,pointListContainer, onDataChange, onDestroy}) {
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
     this.#pointListContainer = pointListContainer;

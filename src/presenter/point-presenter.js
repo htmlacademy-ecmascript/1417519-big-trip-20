@@ -25,16 +25,17 @@ export default class PointPresentor {
 
   #mode = Mode.DEFAULT;
 
-  constructor({pointListContainer,onDataChange,onModeChange}) {
+  constructor({pointListContainer,onDataChange,onModeChange,destinationsModel,offersModel}) {
     this.#pointListContainer = pointListContainer;
     this.#handleDataChange = onDataChange;
     this.#handleModeChange = onModeChange;
+    this.#offer = offersModel;
+    this.#destination = destinationsModel;
+
   }
 
-  init({point,offer,destination}){
+  init({point}){
     this.#point = point;
-    this.#offer = offer;
-    this.#destination = destination;
 
     const prevPointComponent = this.#pointComponent;
     const prevPointEditComponent = this.#pointEditComponent;

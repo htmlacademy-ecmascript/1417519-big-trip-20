@@ -185,7 +185,7 @@ export default class NewPointView extends AbstractStatefulView{
   #datepicker = null;
   constructor({point = BLANK_POINT,offer ,destination ,onFormSubmit,onDeleteClick}){
     super();
-    this.#offer = offer;
+    this.#offer = {...offer};
     this.#destination = destination;
     this.point = {...point};
     this._setState(NewPointView.parsePointToState(point));
