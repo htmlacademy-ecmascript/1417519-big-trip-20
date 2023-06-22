@@ -52,6 +52,9 @@ const newPointBtnComponent = new NewPointBtnView({
   onClick: handleNewPointBtnClick
 });
 
+// eslint-disable-next-line no-return-assign
+pointsModel.addObserver(() => newPointBtnComponent.element.disabled = !pointsModel.succesed);
+
 function handleNewPointFormClose(){
   newPointBtnComponent.element.disabled = false;
 }

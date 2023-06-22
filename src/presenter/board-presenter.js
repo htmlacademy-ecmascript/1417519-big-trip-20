@@ -88,7 +88,7 @@ export default class BoarderPresenter {
       case UserAction.UPDATE_POINT:
         this.#pointPresenters.get(update.id).setSaving();
         try {
-          await this.#pointsModel.updateTask(updateType, update);
+          await this.#pointsModel.updatePoint(updateType, update);
         } catch(err) {
           this.#pointPresenters.get(update.id).setAborting();
         }
@@ -96,7 +96,7 @@ export default class BoarderPresenter {
       case UserAction.ADD_POINT:
         this.#newPointPresenter.setSaving();
         try {
-          await this.#pointsModel.addTask(updateType, update);
+          await this.#pointsModel.addPoint(updateType, update);
         } catch(err) {
           this.#newPointPresenter.setAborting();
         }
@@ -104,7 +104,7 @@ export default class BoarderPresenter {
       case UserAction.DELETE_POINT:
         this.#pointPresenters.get(update.id).setDeleting();
         try {
-          await this.#pointsModel.deleteTask(updateType, update);
+          await this.#pointsModel.deletePoint(updateType, update);
         } catch(err) {
           this.#pointPresenters.get(update.id).setAborting();
         }
@@ -210,6 +210,9 @@ export default class BoarderPresenter {
 
 
   #renderPoint({point}){
+    if(!this.#offersModel.offers.length || !this.#destinationsModel.destinations.length){
+      return;
+    }
     const pointPresenter = new PointPresentor({
       pointListContainer: this.#eventListComponent.element,
       onDataChange: this.#handleViewAction,
