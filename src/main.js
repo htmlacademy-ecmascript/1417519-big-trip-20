@@ -51,9 +51,12 @@ const filterPresenter = new FilterPresenter({
 const newPointBtnComponent = new NewPointBtnView({
   onClick: handleNewPointBtnClick
 });
+function setNewBtnDisable (){
+  newPointBtnComponent.element.disabled = !pointsModel.succesed;
+}
+pointsModel.addObserver(setNewBtnDisable);
 
-// eslint-disable-next-line no-return-assign
-pointsModel.addObserver(() => newPointBtnComponent.element.disabled = !pointsModel.succesed);
+
 
 function handleNewPointFormClose(){
   newPointBtnComponent.element.disabled = false;
