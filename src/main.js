@@ -52,6 +52,12 @@ const newPointBtnComponent = new NewPointBtnView({
   onClick: handleNewPointBtnClick
 });
 
+function setNewBtnDisableModel (){
+  newPointBtnComponent.element.disabled = !pointsModel.succesed || !offersModel.succesed || !destinationsModel.succesed;
+}
+pointsModel.addObserver(setNewBtnDisableModel);
+
+
 function handleNewPointFormClose(){
   newPointBtnComponent.element.disabled = false;
 }

@@ -21,12 +21,13 @@ function createEditFormTemplate(tripPoint,tripOffers,tripDestination) {
   const {basePrice,destination, type, dateFrom, dateTo,offers} = tripPoint;
   const dateStart = humanizePointDateDayMontsTime(dateFrom);
   const dateEnd = humanizePointDateDayMontsTime(dateTo);
-
-
-  const destinationObj = tripDestination.find((dstn)=>dstn.id === destination);
-  const allOffersThisType = tripOffers.find((objOffers) => objOffers.type === type).offers;
+  const destinationObj = tripDestination?.find((dstn)=>dstn.id === destination);
+  const allOffersThisType = tripOffers?.find((objOffers) => objOffers.type === type).offers;
 
   function createDestinationsList (destinations){
+    if(!destinations) {
+      return '';
+    }
     return destinations.map((destinationPoint) =>`
     <option value="${destinationPoint.name}"></option>`).join('');
   }
@@ -59,6 +60,20 @@ function createEditFormTemplate(tripPoint,tripOffers,tripDestination) {
     return picturesList.join('');
   };
 
+  const getDestinations = () => {
+    if(!destinationObj){
+      return '';
+    }
+    return `      <section class="event__section  event__section--destination">
+    <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+    <p class="event__destination-description">${destinationObj?.description}</p>
+    <div class="event__photos-container">
+      <div class="event__photos-tape">
+  ${getPicturesList()}
+      </div>
+    </div>
+  </section>`;
+  };
 
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
@@ -126,7 +141,7 @@ function createEditFormTemplate(tripPoint,tripOffers,tripDestination) {
         <label class="event__label  event__type-output" for="event-destination-1">
           ${tripPoint.type}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${he.encode(destinationObj.name)}" list="destination-list-1">
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${he.encode(destinationObj ? destinationObj.name : '')}" list="destination-list-1">
         <datalist id="destination-list-1">
           ${createDestinationsList(tripDestination)}
         </datalist>
@@ -160,17 +175,7 @@ function createEditFormTemplate(tripPoint,tripOffers,tripDestination) {
         ${getOffersList()}
         </div>
       </section>
-
-      <section class="event__section  event__section--destination">
-        <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        <p class="event__destination-description">${destinationObj.description}</p>
-        <div class="event__photos-container">
-          <div class="event__photos-tape">
-            ${getPicturesList()}
-          </div>
-        </div>
-      </section>
-    </section>
+      ${getDestinations()}
   </form>
 </li>`;
 }
@@ -199,7 +204,7 @@ export default class NewPointView extends AbstractStatefulView{
   }
 
   get template() {
-    return createEditFormTemplate({tripPoint:this._state,tripOffers:this.#offer.offers,tripDestination:this.#destination.destinations});
+    return createEditFormTemplate(this._state,this.#offer.offers,this.#destination.destinations);
   }
 
   removeElement(){
@@ -274,7 +279,7 @@ export default class NewPointView extends AbstractStatefulView{
   #destinationInputChange = (evt) => {
     evt.preventDefault();
 
-    const selectedDestination = this.#destination
+    const selectedDestination = this.#destination.destinations
       .find((point)=> point.name === evt.target.value);
 
     if(!selectedDestination){
@@ -296,7 +301,7 @@ export default class NewPointView extends AbstractStatefulView{
     this._setState({
 
       ...this._state.point,
-      basePrice: evt.target.value
+      basePrice: +evt.target.value
 
     });
   };
