@@ -12,7 +12,7 @@ import DestinationsApiService from './destination-api.js';
 
 
 const AUTHORIZATION = 'Basic hwedfS4wwc21sa2q';
-const END_POINT = 'https://20.ecmascript.pages.academy/big-trip';
+const END_POINT = 'https://20.ecmascript.pages.academy/big-tri';
 
 const tripMainElement = document.querySelector('.trip-main');
 const controlsFilters = document.querySelector('.trip-controls__filters');
