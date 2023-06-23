@@ -273,7 +273,7 @@ export default class EditForm extends AbstractStatefulView{
   #destinationInputChange = (evt) => {
     evt.preventDefault();
 
-    const selectedDestination = this.#destination
+    const selectedDestination = this.#destination.destinations
       .find((point)=> point.name === evt.target.value);
 
     if(!selectedDestination){
@@ -294,7 +294,7 @@ export default class EditForm extends AbstractStatefulView{
 
     this._setState({
       ...this._state.point,
-      basePrice: evt.target.value
+      basePrice: +evt.target.value
 
     });
   };
