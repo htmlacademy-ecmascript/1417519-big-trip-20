@@ -37,7 +37,6 @@ export default class ApiService {
       ApiService.checkStatus(response);
       return response;
     } catch (err) {
-      document.querySelector('.trip-events__msg ').innerHTML = 'Server not available try later or reload page';
       ApiService.catchError(err);
     }
   }

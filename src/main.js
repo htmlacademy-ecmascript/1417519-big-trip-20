@@ -51,11 +51,11 @@ const filterPresenter = new FilterPresenter({
 const newPointBtnComponent = new NewPointBtnView({
   onClick: handleNewPointBtnClick
 });
-function setNewBtnDisable (){
-  newPointBtnComponent.element.disabled = !pointsModel.succesed;
-}
-pointsModel.addObserver(setNewBtnDisable);
 
+function setNewBtnDisableModel (){
+  newPointBtnComponent.element.disabled = !pointsModel.succesed || !offersModel.succesed || !destinationsModel.succesed;
+}
+pointsModel.addObserver(setNewBtnDisableModel);
 
 
 function handleNewPointFormClose(){
